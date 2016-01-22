@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 from selenium.webdriver.firefox.webdriver import WebDriver
-from selenium.webdriver.common.action_chains import ActionChains
-import time, unittest
+
+import  unittest
 
 def is_alert_present(wd):
     try:
@@ -18,7 +18,7 @@ class TestAddGroup(unittest.TestCase):
     def test_TestAddGroup(self):
         success = True
         wd = self.wd
-        wd.get("http://192.168.1.25/addressbook/group.php")
+        wd.get("http://192.168.1.25/addressbook/index.php")
         wd.find_element_by_name("user").click()
         wd.find_element_by_name("user").clear()
         wd.find_element_by_name("user").send_keys("admin")
@@ -32,8 +32,6 @@ class TestAddGroup(unittest.TestCase):
         wd.find_element_by_name("group_name").click()
         wd.find_element_by_name("group_name").clear()
         wd.find_element_by_name("group_name").send_keys("New_01")
-     #   if not wd.find_element_by_xpath("//div[@id='content']//select[normalize-space(.)='[none]']//option[1]").is_selected():
-     #       wd.find_element_by_xpath("//div[@id='content']//select[normalize-space(.)='[none]']//option[1]").click()
         wd.find_element_by_name("group_header").click()
         wd.find_element_by_name("group_header").clear()
         wd.find_element_by_name("group_header").send_keys("+")
