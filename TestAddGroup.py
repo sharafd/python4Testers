@@ -22,11 +22,11 @@ class TestAddGroup(unittest.TestCase):
         self.wd.quit()
 
     # Открытие тестового приложения
-    def open_homepage(self, wd):
-        wd.get("http://192.168.1.25/addressbook/index.php")
+    def open_homepage(self, wd, url):
+        wd.get(url)
 
     # Логин
-    def login(self, wd, login="admin", password="secret"):
+    def login(self, wd, login, password):
         wd.find_element_by_name("user").click()
         wd.find_element_by_name("user").clear()
         wd.find_element_by_name("user").send_keys(login)
@@ -36,7 +36,7 @@ class TestAddGroup(unittest.TestCase):
         wd.find_element_by_xpath("//form[@id='LoginForm']/input[3]").click()
 
     # Создание новой группы контактов
-    def add_new_contacts_group(self, wd, group_name="New_01", group_header="+", group_footer="------------"):
+    def add_new_contacts_group(self, wd, group_name, group_header, group_footer):
         wd.find_element_by_link_text("groups").click()
         wd.find_element_by_name("new").click()
         wd.find_element_by_name("group_name").click()
@@ -58,9 +58,9 @@ class TestAddGroup(unittest.TestCase):
 
         wd = self.wd
 
-        self.open_homepage(wd)
-        self.login(wd)
-        self.add_new_contacts_group(wd)
+        self.open_homepage(wd, "http://192.168.1.25/addressbook/index.php")
+        self.login(wd, "admin", "secret")
+        self.add_new_contacts_group(wd, "New_01", "+", "------------")
 
         wd.find_element_by_link_text("group page").click()
 
