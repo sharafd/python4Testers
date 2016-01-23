@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 
-from selenium.webdriver.firefox.webdriver import WebDriver
-
-from model.groups import Groups
+from model import *
+from helpers import *
 
 import  unittest
 
@@ -17,17 +16,16 @@ class TestAddGroup(unittest.TestCase):
 
     # Инициализация
     def setUp(self):
-        self.wd = WebDriver()
-        self.wd.implicitly_wait(60)
+       wdh = webDriverHelper.WebDriverHelper();
+       self.wd = wdh.wd
 
-    # Финализация
+   # Финализация
     def tearDown(self):
         self.logout(self.wd)
         self.wd.quit()
 
-    # Открытие тестового приложения
-    def open_homepage(self, wd, url):
-        wd.get(url)
+    def logout(self, wd):
+        wd.find_element_by_link_text("Logout").click()
 
     # Логин
     def login(self, wd, login, password):
@@ -39,33 +37,17 @@ class TestAddGroup(unittest.TestCase):
         wd.find_element_by_name("pass").send_keys(password)
         wd.find_element_by_xpath("//form[@id='LoginForm']/input[3]").click()
 
-    # Создание новой группы контактов
-    def add_new_contacts_group(self, wd, Groups):
-        wd.find_element_by_link_text("groups").click()
-        wd.find_element_by_name("new").click()
-        wd.find_element_by_name("group_name").click()
-        wd.find_element_by_name("group_name").clear()
-        wd.find_element_by_name("group_name").send_keys(Groups.name)
-        wd.find_element_by_name("group_header").click()
-        wd.find_element_by_name("group_header").clear()
-        wd.find_element_by_name("group_header").send_keys(Groups.header)
-        wd.find_element_by_name("group_footer").click()
-        wd.find_element_by_name("group_footer").clear()
-        wd.find_element_by_name("group_footer").send_keys(Groups.footer)
-        wd.find_element_by_name("submit").click()
-
-    def logout(self, wd):
-        wd.find_element_by_link_text("Logout").click()
-
     # Тест - создание группы контактов
     def test_TestAddGroup(self):
 
-        wd = self.wd
+        home = homepage.HomePage(self.wd, "admin", "secret")
+        group = groups.Groups(self.wd, "New_01", "+", "------------")
 
-        self.open_homepage(wd, "http://192.168.1.25/addressbook/index.php")
-        self.login(wd, "admin", "secret")
-        self.add_new_contacts_group(wd, Groups("New_01", "+", "------------"))
+        HomePage.open_homepage(home)
 
+        self.login(self.wd, "admin", "secret")
+       # HomePage.login(home)
+        Groups.add_new_contacts_group(group)
 
 if __name__ == '__main__':
     unittest.main()
