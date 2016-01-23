@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
+
 from selenium.webdriver.firefox.webdriver import WebDriver
+
+from model.groups import Groups
 
 import  unittest
 
@@ -19,6 +22,7 @@ class TestAddGroup(unittest.TestCase):
 
     # Финализация
     def tearDown(self):
+        self.logout(self.wd)
         self.wd.quit()
 
     # Открытие тестового приложения
@@ -36,18 +40,18 @@ class TestAddGroup(unittest.TestCase):
         wd.find_element_by_xpath("//form[@id='LoginForm']/input[3]").click()
 
     # Создание новой группы контактов
-    def add_new_contacts_group(self, wd, group_name, group_header, group_footer):
+    def add_new_contacts_group(self, wd, Groups):
         wd.find_element_by_link_text("groups").click()
         wd.find_element_by_name("new").click()
         wd.find_element_by_name("group_name").click()
         wd.find_element_by_name("group_name").clear()
-        wd.find_element_by_name("group_name").send_keys(group_name)
+        wd.find_element_by_name("group_name").send_keys(Groups.name)
         wd.find_element_by_name("group_header").click()
         wd.find_element_by_name("group_header").clear()
-        wd.find_element_by_name("group_header").send_keys(group_header)
+        wd.find_element_by_name("group_header").send_keys(Groups.header)
         wd.find_element_by_name("group_footer").click()
         wd.find_element_by_name("group_footer").clear()
-        wd.find_element_by_name("group_footer").send_keys(group_footer)
+        wd.find_element_by_name("group_footer").send_keys(Groups.footer)
         wd.find_element_by_name("submit").click()
 
     def logout(self, wd):
@@ -60,11 +64,8 @@ class TestAddGroup(unittest.TestCase):
 
         self.open_homepage(wd, "http://192.168.1.25/addressbook/index.php")
         self.login(wd, "admin", "secret")
-        self.add_new_contacts_group(wd, "New_01", "+", "------------")
+        self.add_new_contacts_group(wd, Groups("New_01", "+", "------------"))
 
-        wd.find_element_by_link_text("group page").click()
-
-        self.logout(wd)
 
 if __name__ == '__main__':
     unittest.main()
