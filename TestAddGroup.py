@@ -11,14 +11,22 @@ def is_alert_present(wd):
         return False
 
 class TestAddGroup(unittest.TestCase):
+
+    # Инициализация
     def setUp(self):
         self.wd = WebDriver()
         self.wd.implicitly_wait(60)
-    
-    def test_TestAddGroup(self):
-        success = True
-        wd = self.wd
+
+    # Финализация
+    def tearDown(self):
+        self.wd.quit()
+
+    # Открытие тестового приложения
+    def open_homepage(self, wd):
         wd.get("http://192.168.1.25/addressbook/index.php")
+
+    # Логин
+    def login(self, wd):
         wd.find_element_by_name("user").click()
         wd.find_element_by_name("user").clear()
         wd.find_element_by_name("user").send_keys("admin")
@@ -26,7 +34,9 @@ class TestAddGroup(unittest.TestCase):
         wd.find_element_by_name("pass").clear()
         wd.find_element_by_name("pass").send_keys("secret")
         wd.find_element_by_xpath("//form[@id='LoginForm']/input[3]").click()
-        wd.find_element_by_css_selector("body").click()
+
+    # Создание новой группы контактов
+    def add_new_contacts_group(self, wd):
         wd.find_element_by_link_text("groups").click()
         wd.find_element_by_name("new").click()
         wd.find_element_by_name("group_name").click()
@@ -39,12 +49,22 @@ class TestAddGroup(unittest.TestCase):
         wd.find_element_by_name("group_footer").clear()
         wd.find_element_by_name("group_footer").send_keys("------------")
         wd.find_element_by_name("submit").click()
-        wd.find_element_by_link_text("group page").click()
+
+    def logout(self, wd):
         wd.find_element_by_link_text("Logout").click()
-        self.assertTrue(success)
-    
-    def tearDown(self):
-        self.wd.quit()
+
+    # Тест - создание группы контактов
+    def test_TestAddGroup(self):
+
+        wd = self.wd
+
+        self.open_homepage(wd)
+        self.login(wd)
+        self.add_new_contacts_group(wd)
+
+        wd.find_element_by_link_text("group page").click()
+
+        self.logout(wd)
 
 if __name__ == '__main__':
     unittest.main()
