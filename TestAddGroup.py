@@ -35,8 +35,9 @@ class TestAddGroup(unittest.TestCase):
         home = HomePage(wd = wd, login = "admin", password = "secret")
         # Параметры группы контактов
         group = groups.Groups(wd = wd, name = "New_01", header = "+", footer = "------------")
-
+        # Открытие страницы
         HomePage.open_homepage(home)
+        # Логин
         HomePage.login(home)
 
         time.sleep(3) # Для удобства восприятия
@@ -46,7 +47,7 @@ class TestAddGroup(unittest.TestCase):
         wd.find_element_by_link_text("groups").click()
         time.sleep(3)
 
-       # Тест - создание группы контактов
+       # Тест - создание группы контактов, пустые header, footer
     def test_TestAddGroup2(self):
         global home
         home = HomePage(wd = wd, login = "admin", password = "secret")
