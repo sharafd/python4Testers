@@ -1,9 +1,11 @@
 # -*- coding: utf-8 -*-
 
+# Проверки групп контактов
+
 from model import *
 from helpers import *
 
-import  unittest
+import time, unittest
 
 def is_alert_present(wd):
     try:
@@ -16,38 +18,46 @@ class TestAddGroup(unittest.TestCase):
 
     # Инициализация
     def setUp(self):
-       wdh = webDriverHelper.WebDriverHelper();
-       self.wd = wdh.wd
+       global wd
+       # Получаем WebDriver
+       wdh = webDriverHelper.WebDriverHelper()
+       wd = wdh.wd
 
    # Финализация
     def tearDown(self):
-        self.logout(self.wd)
-        self.wd.quit()
-
-    def logout(self, wd):
-        wd.find_element_by_link_text("Logout").click()
-
-    # Логин
-    def login(self, wd, login, password):
-        wd.find_element_by_name("user").click()
-        wd.find_element_by_name("user").clear()
-        wd.find_element_by_name("user").send_keys(login)
-        wd.find_element_by_name("pass").click()
-        wd.find_element_by_name("pass").clear()
-        wd.find_element_by_name("pass").send_keys(password)
-        wd.find_element_by_xpath("//form[@id='LoginForm']/input[3]").click()
+        HomePage.logout(home)
+        wd.quit()
 
     # Тест - создание группы контактов
     def test_TestAddGroup(self):
-
-        home = homepage.HomePage(self.wd, "admin", "secret")
-        group = groups.Groups(self.wd, "New_01", "+", "------------")
+        # Страница авторизации
+        global home
+        home = HomePage(wd = wd, login = "admin", password = "secret")
+        # Параметры группы контактов
+        group = groups.Groups(wd = wd, name = "New_01", header = "+", footer = "------------")
 
         HomePage.open_homepage(home)
+        HomePage.login(home)
 
-        self.login(self.wd, "admin", "secret")
-       # HomePage.login(home)
+        time.sleep(3) # Для удобства восприятия
+
         Groups.add_new_contacts_group(group)
+        time.sleep(3)
+        wd.find_element_by_link_text("groups").click()
+        time.sleep(3)
+
+       # Тест - создание группы контактов
+    def test_TestAddGroup2(self):
+        global home
+        home = HomePage(wd = wd, login = "admin", password = "secret")
+        group = groups.Groups(wd = wd, name = "New_02", header = "", footer = "")
+
+        HomePage.open_homepage(home)
+        HomePage.login(home)
+
+        Groups.add_new_contacts_group(group)
+
+        wd.find_element_by_link_text("groups").click()
 
 if __name__ == '__main__':
     unittest.main()
