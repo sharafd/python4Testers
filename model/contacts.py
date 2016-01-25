@@ -4,7 +4,7 @@
 
 class Contacts:
     
-    def __init__(self, wd, address, middlename, lastname, nickname, byear, ayear, title, company, home, mobile,
+    def __init__(self, wd, address, middlename, lastname, nickname, byear, ayear, photo, title, company, home, mobile,
                  work, fax, email2, email3, homepage, address2, phone2, notes, bday, bmonth, aday, amonth, group):
         self.wd = wd
         self.address = address
@@ -17,6 +17,7 @@ class Contacts:
         self.aday = aday
         self.amonth = amonth
         self.ayear = ayear
+        self.photo = photo
         self.title = title
         self.company = company
         self.home = home
@@ -71,13 +72,10 @@ class Contacts:
         Contacts.wd.find_element_by_name("ayear").click()
         Contacts.wd.find_element_by_name("ayear").clear()
         Contacts.wd.find_element_by_name("ayear").send_keys(Contacts.ayear)
-        Contacts.wd.find_element_by_name("theform").click()
-        Contacts.wd.find_element_by_name("lastname").click()
-        Contacts.wd.find_element_by_name("lastname").clear()
-        Contacts.wd.find_element_by_name("lastname").send_keys(Contacts.lastname)
-        Contacts.wd.find_element_by_name("nickname").click()
-        Contacts.wd.find_element_by_name("nickname").clear()
-        Contacts.wd.find_element_by_name("nickname").send_keys(Contacts.nickname)
+
+        if Contacts.photo <> "":
+          Contacts.wd.find_element_by_xpath("//input[@type='file' and @name='photo']//option[@value='" + Contacts.photo + "']")
+
         Contacts.wd.find_element_by_name("title").click()
         Contacts.wd.find_element_by_name("title").clear()
         Contacts.wd.find_element_by_name("title").send_keys(Contacts.title)

@@ -44,8 +44,7 @@ class TestAddGroup(unittest.TestCase):
 
         Groups.add_new_contacts_group(group)
         time.sleep(3)
-        wd.find_element_by_link_text("groups").click()
-        time.sleep(3)
+      #  wd.find_element_by_link_text("groups").click()
 
        # Тест - создание группы контактов, пустые header, footer
     def test_TestAddGroup2(self):
@@ -57,8 +56,6 @@ class TestAddGroup(unittest.TestCase):
         HomePage.login(home)
 
         Groups.add_new_contacts_group(group)
-
-        wd.find_element_by_link_text("groups").click()
 
 if __name__ == '__main__':
     unittest.main()
