@@ -62,7 +62,7 @@ class Contacts:
         Contacts.wd.find_element_by_name("byear").send_keys(Contacts.byear)
 
         if Contacts.aday <> "":
-         if not Contacts.wd.find_element_by_xpath("//select[@name='baay']//option[text()='" + Contacts.aday + "']").is_selected():
+         if not Contacts.wd.find_element_by_xpath("//select[@name='aday']//option[text()='" + Contacts.aday + "']").is_selected():
            Contacts.wd.find_element_by_xpath("//select[@name='aday']//option[text()='" + Contacts.aday + "']").click()
 
         if Contacts.amonth <> "":
@@ -74,7 +74,7 @@ class Contacts:
         Contacts.wd.find_element_by_name("ayear").send_keys(Contacts.ayear)
 
         if Contacts.photo <> "":
-          Contacts.wd.find_element_by_xpath("//input[@type='file' and @name='photo']//option[@value='" + Contacts.photo + "']")
+          Contacts.wd.find_element_by_xpath("//input[@type='file' and @name='photo']").send_keys(Contacts.photo)
 
         Contacts.wd.find_element_by_name("title").click()
         Contacts.wd.find_element_by_name("title").clear()
