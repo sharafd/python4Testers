@@ -2,60 +2,44 @@
 
 # Проверки групп контактов
 
-from model import *
-from helpers import *
+from application import Application
 
-import time, unittest
 
-def is_alert_present(wd):
-    try:
-        wd.switch_to_alert().text
-        return True
-    except:
-        return False
+import time, pytest
 
-class TestAddGroup(unittest.TestCase):
+from model import HomePage, Groups
 
-    # Инициализация
-    def setUp(self):
-       global wd
-       # Получаем WebDriver
-       wdh = webDriverHelper.WebDriverHelper()
-       wd = wdh.wd
 
-   # Финализация
-    def tearDown(self):
-        HomePage.logout(home)
-        wd.quit()
+@pytest.fixture()
+def app(request):
+    fixture = Application()
+    request.addfinalizer(fixture.destroy())
+    return fixture
 
-    # Тест - создание группы контактов
-    def test_TestAddGroup(self):
-        # Страница авторизации
-        global home
-        home = HomePage(wd = wd, login = "admin", password = "secret")
-        # Параметры группы контактов
-        group = groups.Groups(wd = wd, name = "New_01", header = "+", footer = "------------")
-        # Открытие страницы
-        HomePage.open_homepage(home)
-        # Логин
-        HomePage.login(home)
+# Тест - создание группы контактов
+def test_TestAddGroup(app):
+    # Страница авторизации
+    home = HomePage(wd=app.wd, login="admin", password="secret")
+    # Параметры группы контактов
+    group = Groups(wd=app.wd, name="New_01", header="+", footer="------------")
+    # Открытие страницы
+    HomePage.open_homepage(home)
+    # Логин
+    HomePage.login(home)
+    time.sleep(3)  # Для удобства восприятия
+    Groups.add_new_contacts_group(group)
+    time.sleep(3)
+    HomePage.logout(home)
+    time.sleep(3)
 
-        time.sleep(3) # Для удобства восприятия
+# Тест - создание группы контактов, пустые header, footer
+def test_TestAddGroup2(app):
+    home = HomePage(wd=app.wd, login="admin", password="secret")
+    group = Groups(wd=app.wd, name="New_02", header="", footer="")
 
-        Groups.add_new_contacts_group(group)
-        time.sleep(3)
-      #  wd.find_element_by_link_text("groups").click()
+    HomePage.open_homepage(home)
+    HomePage.login(home)
 
-       # Тест - создание группы контактов, пустые header, footer
-    def test_TestAddGroup2(self):
-        global home
-        home = HomePage(wd = wd, login = "admin", password = "secret")
-        group = groups.Groups(wd = wd, name = "New_02", header = "", footer = "")
+    Groups.add_new_contacts_group(group)
 
-        HomePage.open_homepage(home)
-        HomePage.login(home)
-
-        Groups.add_new_contacts_group(group)
-
-if __name__ == '__main__':
-    unittest.main()
+    HomePage.logout(home)

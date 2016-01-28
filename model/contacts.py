@@ -49,11 +49,11 @@ class Contacts:
         Contacts.wd.find_element_by_name("nickname").clear()
         Contacts.wd.find_element_by_name("nickname").send_keys(Contacts.nickname)
 
-        if Contacts.bday <> "":
+        if Contacts.bday != "":
          if not Contacts.wd.find_element_by_xpath("//select[@name='bday']//option[text()='" + Contacts.bday + "']").is_selected():
            Contacts.wd.find_element_by_xpath("//select[@name='bday']//option[text()='" + Contacts.bday + "']").click()
 
-        if Contacts.bmonth <> "":
+        if Contacts.bmonth != "":
          if not Contacts.wd.find_element_by_xpath("//select[@name='bmonth']//option[@value='" + Contacts.bmonth + "']").is_selected():
            Contacts.wd.find_element_by_xpath("//select[@name='bmonth']//option[@value='" + Contacts.bmonth + "']").click()
 
@@ -61,11 +61,11 @@ class Contacts:
         Contacts.wd.find_element_by_name("byear").clear()
         Contacts.wd.find_element_by_name("byear").send_keys(Contacts.byear)
 
-        if Contacts.aday <> "":
+        if Contacts.aday != "":
          if not Contacts.wd.find_element_by_xpath("//select[@name='aday']//option[text()='" + Contacts.aday + "']").is_selected():
            Contacts.wd.find_element_by_xpath("//select[@name='aday']//option[text()='" + Contacts.aday + "']").click()
 
-        if Contacts.amonth <> "":
+        if Contacts.amonth != "":
          if not Contacts.wd.find_element_by_xpath("//select[@name='amonth']//option[@value='" + Contacts.amonth + "']").is_selected():
            Contacts.wd.find_element_by_xpath("//select[@name='amonth']//option[@value='" + Contacts.amonth + "']").click()
 
@@ -73,7 +73,7 @@ class Contacts:
         Contacts.wd.find_element_by_name("ayear").clear()
         Contacts.wd.find_element_by_name("ayear").send_keys(Contacts.ayear)
 
-        if Contacts.photo <> "":
+        if Contacts.photo != "":
           Contacts.wd.find_element_by_xpath("//input[@type='file' and @name='photo']").send_keys(Contacts.photo)
 
         Contacts.wd.find_element_by_name("title").click()
@@ -116,7 +116,7 @@ class Contacts:
         Contacts.wd.find_element_by_name("notes").clear()
         Contacts.wd.find_element_by_name("notes").send_keys(Contacts.notes)
 
-        if Contacts.group <> "":
+        if Contacts.group != "":
          if not Contacts.wd.find_element_by_xpath("//select[@name='new_group']//option[text() = '" + Contacts.group + "']").is_selected():
            Contacts.wd.find_element_by_xpath("//select[@name='new_group']//option[text() ='" + Contacts.group + "']").click()
 
