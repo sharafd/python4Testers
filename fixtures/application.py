@@ -1,15 +1,17 @@
 # -*- coding: utf-8 -*-
 
-#from helpers import webDriverHelper
+from helpers.sessionHelper import SessionHelper
+from helpers.groupsHelper import GroupsHelper
+
 from selenium.webdriver.firefox.webdriver import WebDriver
 
 class Application:
 
     def __init__(self):
-      # self.wdh = webDriverHelper.WebDriverHelper()
-      # self.wd = self.wdh.wd
         self.wd = WebDriver()
         self.wd.implicitly_wait(60)
+        self.session = SessionHelper(self)
+        self.group = GroupsHelper(self)
 
     def destroy(self):
-       self.wd.quit()
+        self.wd.quit()
