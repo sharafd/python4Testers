@@ -5,15 +5,17 @@ import time, pytest
 from fixtures.application import Application
 from model import LoginPage, Groups
 
-
 @pytest.fixture()
 def app(request):
     fixture = Application()
-    request.addfinalizer(fixture.destroy())
+
+    def teardown():
+        fixture.destroy()
+
+    request.addfinalizer(teardown)
     return fixture
 
-
-# Тест - создание группы контактов
+ # Тест - создание группы контактов
 def test_add_group(app):
     # Страница авторизации
     login = LoginPage(login="admin", password="secret")
@@ -21,6 +23,7 @@ def test_add_group(app):
     group = Groups(name="New_01", header="+", footer="------------")
     # Открытие страницы
     app.session.open_login_page()
+    # Логин
     app.session.login(login)
     # Создаём группу контактов
     app.group.add_new_contacts_group(group)
