@@ -21,5 +21,8 @@ class SessionHelper:
         self.app.wd.find_element_by_name("pass").send_keys(loginpage.password)
         self.app.wd.find_element_by_xpath("//input[@type='submit' and @value='Login']").click()
 
+    def to_homepage(self):
+        self.app.wd.find_element_by_link_text("home").click()
+
     def logout(self):
         self.app.wd.find_element_by_link_text("Logout").click()

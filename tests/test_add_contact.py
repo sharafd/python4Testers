@@ -22,7 +22,7 @@ def test_TestAddContact(app):
                              photo= root_dir + "/resources/avatar.png", phone2="+999", notes="++++++++++", bday="4", aday="14",
                              amonth= "July", bmonth= "May", group=""))
     #time.sleep(3)
-    app.wd.find_element_by_link_text("home").click()
+    app.session.to_homepage()
     #time.sleep(3)
     app.session.logout()
 
@@ -40,5 +40,5 @@ def test_TestAddContactToGroup(app):
                              homepage="www.my.org", address2="964646466", phone2="146546546", notes="++++++++++", bday="4", aday="6" , amonth= "July",
                              bmonth= "", photo= "", group="New_01"))
 
-    app.wd.find_element_by_link_text("home").click()
+    app.session.to_homepage()
     app.session.logout()

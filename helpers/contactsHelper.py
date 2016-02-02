@@ -96,3 +96,19 @@ class ContactsHelper:
            self.app.wd.find_element_by_xpath("//select[@name='new_group']//option[text() ='" + contacts.group + "']").click()
 
         self.app.wd.find_element_by_xpath("//input[@type='submit' and @name='submit' and @value='Enter']").click()
+
+    # Удаление первого сверху группы контакта в списке
+    def delete_first_contact(self):
+        self.app.wd.find_element_by_link_text("home").click()
+        self.app.wd.find_element_by_name("selected[]").click()
+        self.app.wd.find_element_by_xpath("//input[@type='button' and @value='Delete']").click()
+        self.app.wd.switch_to_alert().accept()
+
+      # Удаление  контактa по имени
+    def delete_contact_by_name(self, name):
+
+        self.app.wd.find_element_by_link_text("home").click()
+        self.app.wd.find_element_by_xpath("//input[contains(@title, 'Select (" + name + ")')]").click()
+        self.app.wd.find_element_by_name("delete").click()
+        self.app.wd.find_element_by_xpath("//input[@type='button' and @value='Delete']").click()
+        self.app.wd.switch_to_alert().accept()
