@@ -2,20 +2,9 @@
 
 # Проверки контактов
 
-import time, os, pytest
+import time, os
 
-from fixtures import Application
 from model import *
-
-@pytest.fixture()
-def app(request):
-    fixture = Application()
-
-    def teardown():
-        fixture.destroy()
-
-    request.addfinalizer(teardown)
-    return fixture
 
 # Добавление нового контакта без привязки к группе
 def test_TestAddContact(app):

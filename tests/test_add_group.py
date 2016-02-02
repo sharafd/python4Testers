@@ -1,19 +1,8 @@
 # -*- coding: utf-8 -*-
 
 # Проверки групп контактов
-import time, pytest
-from fixtures.application import Application
+
 from model import LoginPage, Groups
-
-@pytest.fixture()
-def app(request):
-    fixture = Application()
-
-    def teardown():
-        fixture.destroy()
-
-    request.addfinalizer(teardown)
-    return fixture
 
  # Тест - создание группы контактов
 def test_add_group(app):
