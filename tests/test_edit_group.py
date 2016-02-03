@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Проверки групп контактов
+# Проверки групп контактов - редактирование
 
 from model import LoginPage, Groups
 
@@ -18,3 +18,5 @@ def test_edit_group_by_name(app):
     app.group.edit_contacts_group_by_name(name = "New_01", groups = group)
     # Выход
     app.session.logout()
+
+

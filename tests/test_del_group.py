@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
-# Проверки групп контактов
+# Проверки групп контактов - удаление
 
 from model import LoginPage
 
 # Тест - удаление первой группы контактов
-def test_add_group(app):
+def test_delete_first_group(app):
     # Страница авторизации
     login = LoginPage(login="admin", password="secret")
     # Открытие страницы

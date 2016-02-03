@@ -13,15 +13,6 @@ class GroupsHelper:
     # Создание новой группы контактов
     def add_new_contacts_group(self, groups):
 
-        if groups.name == None:
-            groups.name = ""
-
-        if groups.header == None:
-            groups.header = ""
-
-        if groups.footer == None:
-            groups.footer = ""
-
         self.open_groups_page()
 
         self.app.wd.find_element_by_name("new").click()
@@ -54,15 +45,6 @@ class GroupsHelper:
 
     # Редактирование группы контактов
     def edit_contacts_group_by_name(self, name, groups):
-
-        if groups.name == None:
-            groups.name = ""
-
-        if groups.header == None:
-            groups.header = ""
-
-        if groups.footer == None:
-            groups.footer = ""
 
         self.open_groups_page()
 

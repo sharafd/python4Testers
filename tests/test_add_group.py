@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-# Проверки групп контактов
+# Проверки групп контактов - добавление
 
 from model import LoginPage, Groups
 
@@ -19,10 +19,10 @@ def test_add_group(app):
     # Выход
     app.session.logout()
 
-# Тест - создание группы контактов, пустые header, footer
-def test_add_group_2(app):
+# Тест - создание группы контактов, пустые name, header, footer
+def test_add_group_empty_params(app):
     login = LoginPage(login="admin", password="secret")
-    group = Groups(name="New_02", header="", footer="")
+    group = Groups(name=None, header=None, footer=None)
 
     app.session.open_login_page()
     app.session.login(login)
