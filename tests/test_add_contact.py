@@ -20,7 +20,7 @@ def test_TestAddContact(app):
                              title="Contact", company="MyCompany", home="Str, 7790", mobile="+700", work="SOHO", fax="545454554",
                              email2="employee@company.org", email3="boss@foo.org", homepage="www.my.org", address2="Samara",
                              photo= root_dir + "/resources/avatar.png", phone2="+999", notes="++++++++++", bday="4", aday="14",
-                             amonth= "July", bmonth= "May", group=""))
+                             amonth= "July", bmonth= "May", group=None))
     #time.sleep(3)
     app.session.to_homepage()
     #time.sleep(3)

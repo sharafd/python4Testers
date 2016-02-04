@@ -19,4 +19,17 @@ def test_edit_group_by_name(app):
     # Выход
     app.session.logout()
 
+# Тест - редактирование группы контактов по имени - только наименование
+def test_edit_first_contacts_group(app):
+      # Параметры группы контактов
+    group = Groups(name="New_045456661")
+    # Страница авторизации
+    login = LoginPage(login="admin", password="secret")
+    # Открытие страницы
+    app.session.open_login_page()
+    # Логин
+    app.session.login(login)
 
+    app.group.edit_first_contacts_group(groups = group)
+    # Выход
+    app.session.logout()

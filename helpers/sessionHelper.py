@@ -13,12 +13,14 @@ class SessionHelper:
 
     # Логин
     def login(self, loginpage):
-        self.app.wd.find_element_by_name("user").click()
-        self.app.wd.find_element_by_name("user").clear()
-        self.app.wd.find_element_by_name("user").send_keys(loginpage.login)
-        self.app.wd.find_element_by_name("pass").click()
-        self.app.wd.find_element_by_name("pass").clear()
-        self.app.wd.find_element_by_name("pass").send_keys(loginpage.password)
+        if loginpage.login is not None:
+            self.app.wd.find_element_by_name("user").click()
+            self.app.wd.find_element_by_name("user").clear()
+            self.app.wd.find_element_by_name("user").send_keys(loginpage.login)
+        if loginpage.password is not None:
+            self.app.wd.find_element_by_name("pass").click()
+            self.app.wd.find_element_by_name("pass").clear()
+            self.app.wd.find_element_by_name("pass").send_keys(loginpage.password)
         self.app.wd.find_element_by_xpath("//input[@type='submit' and @value='Login']").click()
 
     def to_homepage(self):

@@ -42,8 +42,6 @@ def test_TestModifyContact(app):
     app.session.login(login)
 
     app.contacts.modifyFirstContact(Contacts(address="Qwerty00", middlename="foo", lastname="Bar", nickname="boo", byear="1988", ayear="2000",
-                             title="Contact", company="", home="", mobile="", work="", fax="545454554",
-                             email2="", email3="", homepage="", address2="Samara",
-                             photo= root_dir + "/resources/avatar.png", phone2="+999", notes="++++++++++", bday="4", aday="14",
+                             title="Contact", fax="545454554", address2="Samara",  photo= root_dir + "/resources/avatar.png", phone2="+999", notes="++++++++++", bday="4", aday="14",
                              amonth= "July", bmonth= "May", group=""))
     app.session.logout()
