@@ -151,7 +151,6 @@ class ContactsHelper:
 
     # Редактирование первого сверху контакта в списке со страницы просмотра
     def modifyFirstContact(self, contacts):
-
         self.app.wd.find_element_by_link_text("home").click()
         self.app.wd.find_element_by_name("selected[]").click()
         self.app.wd.find_element_by_xpath("//img[@title ='Details']").click()
@@ -164,3 +163,11 @@ class ContactsHelper:
         self.fill_contact_params(contacts)
 
         self.app.wd.find_element_by_xpath("//input[@type='submit' and @value='Update']").click()
+
+    # Проверка существования контактоа в принципе
+    def is_contact_exist(self):
+          self.app.wd.find_element_by_link_text("home").click()
+          if self.app.wd.find_element_by_name("selected[]"):
+             return True
+          else:
+             return False

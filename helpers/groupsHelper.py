@@ -66,3 +66,19 @@ class GroupsHelper:
         self.fill_group_params(groups)
 
         self.app.wd.find_element_by_name("update").click()
+
+    # Проверка существования группы
+    def is_group_exist(self, name=None):
+        self.open_groups_page()
+        if name is None:
+            #  Есть ли группы вообще
+            if self.app.wd.find_element_by_name("selected[]"):
+                return True
+            else:
+                return False
+        # Ищем группу по имени
+        else:
+            if  self.app.wd.find_element_by_xpath("//input[contains(@title, 'Select (" + name + ")')]"):
+                return True
+            else:
+                return False
