@@ -1,6 +1,6 @@
 import pytest
 from fixtures import Application
-from model import loginpage, LoginPage
+from model import LoginPage
 
 fixture = None
 login = LoginPage(login = "admin", password = "secret")
