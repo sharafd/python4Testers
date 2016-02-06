@@ -36,7 +36,8 @@ class SessionHelper:
         self.app.wd.find_element_by_xpath("//input[@type='submit' and @value='Login']").click()
 
     def to_homepage(self):
-        self.app.wd.find_element_by_link_text("home").click()
+        if not (self.app.wd.current_url.endswith("/addressbook/") and len(self.app.wd.find_elements_by_xpath("//input[@type='button' and @value='Send e-Mail']")) > 0):
+           self.app.wd.find_element_by_link_text("home").click()
 
     def logout(self):
         self.app.wd.find_element_by_link_text("Logout").click()

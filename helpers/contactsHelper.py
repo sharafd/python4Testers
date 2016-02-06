@@ -122,14 +122,12 @@ class ContactsHelper:
 
     # Удаление первого сверху контакта в списке
     def delete_first_contact(self):
-        self.app.wd.find_element_by_link_text("home").click()
         self.app.wd.find_element_by_name("selected[]").click()
         self.app.wd.find_element_by_xpath("//input[@type='button' and @value='Delete']").click()
         self.app.wd.switch_to_alert().accept()
 
     # Редактирование первого сверху контакта в списке
     def editFirstContact(self, contacts):
-        self.app.wd.find_element_by_link_text("home").click()
         self.app.wd.find_element_by_name("selected[]").click()
         self.app.wd.find_element_by_xpath("//img[@title ='Edit']").click()
 
@@ -143,7 +141,6 @@ class ContactsHelper:
 
     # Удаление фото у первого сверху контакта в списке
     def deleteFirstContactPhoto(self):
-        self.app.wd.find_element_by_link_text("home").click()
         self.app.wd.find_element_by_name("selected[]").click()
         self.app.wd.find_element_by_xpath("//img[@title ='Edit']").click()
         self.app.wd.find_element_by_xpath("//input[@name='delete_photo']").click()
@@ -151,7 +148,6 @@ class ContactsHelper:
 
     # Редактирование первого сверху контакта в списке со страницы просмотра
     def modifyFirstContact(self, contacts):
-        self.app.wd.find_element_by_link_text("home").click()
         self.app.wd.find_element_by_name("selected[]").click()
         self.app.wd.find_element_by_xpath("//img[@title ='Details']").click()
         self.app.wd.find_element_by_xpath("//input[@type='submit' and @value='Modify']").click()
@@ -166,7 +162,6 @@ class ContactsHelper:
 
     # Проверка существования контактоа в принципе
     def is_contact_exist(self):
-          self.app.wd.find_element_by_link_text("home").click()
           if self.app.wd.find_element_by_name("selected[]"):
              return True
           else:

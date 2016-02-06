@@ -9,6 +9,7 @@ root_dir = os.path.abspath(os.path.dirname(__file__))
 
 # Редактирование контакта
 def test_TestEditContact(app):
+    app.session.to_homepage()
     if not app.contacts.is_contact_exist():
         # Контактов нет - создадим
         app.contacts.addContact(Contacts(address="Qwerty", middlename="foo", lastname="Bar", nickname="boo", byear="1988", ayear="2000",
@@ -34,6 +35,7 @@ def test_TestDelContactPhoto(app):
 
 # Редактирование контакта со страницы просмотра
 def test_TestModifyContact(app):
+    app.session.to_homepage()
     if not app.contacts.is_contact_exist():
         # Контактов нет - создадим
         app.contacts.editFirstContact(Contacts(address="Qwerty00", middlename="foo", lastname="Bar", nickname="boo", byear="1988", ayear="2000",

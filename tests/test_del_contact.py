@@ -6,6 +6,7 @@ from model import *
 
 # Тест - удаление первой в списке группы контактов
 def test_delete_group(app):
+    app.session.to_homepage()
     if not app.contacts.is_contact_exist():
         # Контактов нет - создадим
         app.contacts.addContact(Contacts(address="Qwerty", middlename="foo", lastname="Bar", nickname="boo", byear="1988", ayear="2000",
