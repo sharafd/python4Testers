@@ -10,10 +10,19 @@ class Application:
 
     def __init__(self):
         self.wd = WebDriver()
-        self.wd.implicitly_wait(60)
+        self.wd.implicitly_wait(5)
         self.session = SessionHelper(self)
         self.group = GroupsHelper(self)
         self.contacts = ContactsHelper(self)
 
+    # Разрушение фикстуры
     def destroy(self):
         self.wd.quit()
+
+    # Проверка фикстуры
+    def isValid(self):
+        try:
+            self.wd.current_url
+            return True
+        except:
+            return False

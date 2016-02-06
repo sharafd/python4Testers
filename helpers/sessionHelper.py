@@ -7,6 +7,18 @@ class SessionHelper:
     def __init__(self, app):
         self.app = app
 
+    def is_logged_in(self):
+        if len(self.app.wd.find_elements_by_link_text("Logout")) > 0:
+            return True
+        else:
+            return False
+
+    def is_logged_as(self, username):
+        if self.app.wd.find_element_by_xpath("//div/div[1]/form/b").text == "(" + username + ")":
+            return True
+        else:
+            return False
+
     # Открытие тестового приложения
     def open_login_page(self):
         self.app.wd.get("http://192.168.1.25/addressbook/index.php")
@@ -28,3 +40,18 @@ class SessionHelper:
 
     def logout(self):
         self.app.wd.find_element_by_link_text("Logout").click()
+
+    # Проверка выхода из приложения
+    def ensure_logout(self):
+        if self.is_logged_in():
+            self.logout()
+
+    #Проверка корректности логина
+    def ensure_login(self, loginpage, username):
+        if self.is_logged_in():
+            if self.is_logged_as(username):
+               return
+            else:
+                self.logout()
+        self.login(loginpage)
+
