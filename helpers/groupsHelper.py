@@ -2,6 +2,8 @@
 
 # Класс для работы с группами контактов
 
+from model import Groups
+
 class GroupsHelper:
 
     def __init__(self, app):
@@ -83,3 +85,13 @@ class GroupsHelper:
                 return True
             else:
                 return False
+
+    # Cписок групп
+    def get_groups_list(self):
+        gr_list = []
+        self.open_groups_page()
+        for element in self.app.wd.find_elements_by_name("selected[]"):
+            text = element.get_attribute("title")
+            id = element.get_attribute("value")
+            gr_list.append(Groups(id = id, name = text))
+        return gr_list

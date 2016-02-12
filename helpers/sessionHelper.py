@@ -40,7 +40,7 @@ class SessionHelper:
            self.app.wd.find_element_by_link_text("home").click()
 
     def logout(self):
-        self.app.wd.find_element_by_link_text("Logout").click()
+           self.app.wd.find_element_by_link_text("Logout").click()
 
     # Проверка выхода из приложения
     def ensure_logout(self):
