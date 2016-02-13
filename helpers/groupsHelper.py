@@ -75,7 +75,7 @@ class GroupsHelper:
         self.open_groups_page()
         if name is None:
             #  Есть ли группы вообще
-            if self.app.wd.find_element_by_name("selected[]"):
+            if self.app.wd.find_elements_by_name("selected[]"):
                 return True
             else:
                 return False

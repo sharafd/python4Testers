@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Класс для работы с контактами
+from model import Contacts
 
 class ContactsHelper:
 
@@ -162,7 +163,15 @@ class ContactsHelper:
 
     # Проверка существования контактоа в принципе
     def is_contact_exist(self):
-          if self.app.wd.find_element_by_name("selected[]"):
+          if self.app.wd.find_elements_by_name("selected[]"):
              return True
           else:
              return False
+
+    #Список контактов
+    def get_contacts_list(self):
+        c_list = []
+        for element in self.app.wd.find_elements_by_xpath("//tr[@name='entry']"):
+            id = element.find_element_by_xpath("//input[@type='checkbox']").get_attribute("value")
+            c_list.append(Contacts(id = id))
+        return c_list

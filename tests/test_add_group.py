@@ -8,7 +8,7 @@ from model import Groups
 def test_add_group(app):
     # Параметры группы контактов
     group = Groups(name="New_01", header="+", footer="------------")
-    # Запминаем список групп
+    # Запоминаем список групп
     old_groups = app.group.get_groups_list()
     # Создаём группу контактов
     app.group.add_new_contacts_group(group)
