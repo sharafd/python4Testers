@@ -12,7 +12,7 @@ def test_add_group(app):
     old_groups = app.group.get_groups_list()
     # Создаём группу контактов
     app.group.add_new_contacts_group(group)
-    #  Получаем норвый список групп
+    #  Получаем новый список групп
     new_groups = app.group.get_groups_list()
     # Сравниваем размер списков
     assert len(old_groups) + 1 == len(new_groups)
