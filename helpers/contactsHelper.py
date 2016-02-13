@@ -172,6 +172,7 @@ class ContactsHelper:
     def get_contacts_list(self):
         c_list = []
         for element in self.app.wd.find_elements_by_xpath("//tr[@name='entry']"):
-            id = element.find_element_by_xpath("//input[@type='checkbox']").get_attribute("value")
-            c_list.append(Contacts(id = id))
+            value = element.find_element_by_xpath("//input[@type='checkbox']").get_attribute("value")
+            address  =  element.find_element_by_xpath("//td[4]").text
+            c_list.append(Contacts(id = value, address = address))
         return c_list
