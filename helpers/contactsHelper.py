@@ -161,7 +161,7 @@ class ContactsHelper:
 
         self.app.wd.find_element_by_xpath("//input[@type='submit' and @value='Update']").click()
 
-    # Проверка существования контактоа в принципе
+    # Проверка существования контактов в принципе
     def is_contact_exist(self):
           if self.app.wd.find_elements_by_name("selected[]"):
              return True

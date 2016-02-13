@@ -6,19 +6,28 @@ from model import LoginPage, Groups
 
 # Тест - редактирование группы контактов по имени
 def test_edit_group_by_name(app):
-    # Параметры группы контактов
+    # Параметры групп контактов
     group = Groups(name="New_06661", header="664464664", footer= None)
-    if not app.group.is_group_exist(name = "New_01"):
+    editgroup = Groups(name="New_01")
+    if not app.group.is_group_exist(editgroup.name):
         # группы нет - надо создать
-        app.group.add_new_contacts_group(Groups(name="New_01"))
+        app.group.add_new_contacts_group(editgroup)
     # Запoминаем список групп
     old_groups = app.group.get_groups_list()
     # редактирование группы контактов по имени
-    app.group.edit_contacts_group_by_name(name = "New_01", groups = group)
+    editgroup.id = app.group.edit_contacts_group_by_name(name = "New_01", groups = group)
     #  Получаем норвый список групп
     new_groups = app.group.get_groups_list()
     # Сравниваем размер списков
     assert len(old_groups) == len(new_groups)
+    # Сравниваем списки по содержимому
+    editgroup.name = "Select ("+ editgroup.name +")"
+    old_groups.remove(editgroup) # Удаляем отредактирорванную группу
+    # записываем в списoк исправленную группу
+    group.id = editgroup.id
+    old_groups.append(group)
+    # cравниваем
+    assert old_groups.sort() == new_groups.sort()
 
 # Тест - редактирование группы контактов  - только наименование
 def test_edit_first_contacts_group(app):
@@ -29,9 +38,14 @@ def test_edit_first_contacts_group(app):
         app.group.add_new_contacts_group(Groups(name="New_01"))
      # Запoминаем список групп
     old_groups = app.group.get_groups_list()
+    group.id = old_groups[0].id
     # редактирование группы контактов
     app.group.edit_first_contacts_group(groups = group)
     #  Получаем норвый список групп
     new_groups = app.group.get_groups_list()
     # Сравниваем размер списков
     assert len(old_groups) == len(new_groups)
+    # Сравниваем списки по содержимому
+    old_groups[0]= group
+    old_groups[0].name = "Select ("+ group.name +")"
+    assert sorted(old_groups, key=Groups.id_or_max) == sorted(new_groups, key=Groups.id_or_max)

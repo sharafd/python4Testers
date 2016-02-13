@@ -23,9 +23,14 @@ def test_TestAddContact(app):
     new_contacts = app.contacts.get_contacts_list()
     # Сравниваем размер списков
     assert len(old_contacts) + 1 == len(new_contacts)
+    # Сравниваем списки по содержимому
+    assert old_contacts.sort() == new_contacts.sort()
 
 # Добавление нового контакта в группу New_01
 def test_TestAddContactToGroup(app):
+    if not app.group.is_group_exist(name = "New_01"):
+        # группы нет - надо создать
+        app.group.add_new_contacts_group(Groups(name="New_01"))
     app.session.to_homepage()
     old_contacts= app.contacts.get_contacts_list()
     app.contacts.addContact(Contacts(address="Qwerty", middlename="foo", lastname="Bar", nickname="boo", byear="1988", ayear="2000",
@@ -37,4 +42,5 @@ def test_TestAddContactToGroup(app):
     new_contacts = app.contacts.get_contacts_list()
     # Сравниваем размер списков
     assert len(old_contacts) + 1 == len(new_contacts)
-
+    # Сравниваем списки по содержимому
+    assert old_contacts.sort() == new_contacts.sort()

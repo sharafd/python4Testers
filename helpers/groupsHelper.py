@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 
 # Класс для работы с группами контактов
-
 from model import Groups
 
 class GroupsHelper:
@@ -44,22 +43,22 @@ class GroupsHelper:
     # Удаление группы контактов по имени
     def delete_contacts_group_by_name(self, name):
         self.open_groups_page()
-
+        gid = self.app.wd.find_element_by_xpath("//input[contains(@title, 'Select (" + name + ")')]").get_attribute("value")
         self.app.wd.find_element_by_xpath("//input[contains(@title, 'Select (" + name + ")')]").click()
         self.app.wd.find_element_by_name("delete").click()
+        return gid
 
     # Редактирование группы контактов
     def edit_contacts_group_by_name(self, name, groups):
         self.open_groups_page()
-
+        gid = self.app.wd.find_element_by_xpath("//input[contains(@title, 'Select (" + name + ")')]").get_attribute("value")
         self.app.wd.find_element_by_xpath("//input[contains(@title, 'Select (" + name + ")')]").click()
         self.app.wd.find_element_by_name("edit").click()
-
         self.fill_group_params(groups)
-
         self.app.wd.find_element_by_name("update").click()
+        return gid
 
-     # Редактирование первой сверху группы контактов
+    # Редактирование первой сверху группы контактов
     def edit_first_contacts_group(self, groups):
         self.open_groups_page()
 
@@ -81,7 +80,7 @@ class GroupsHelper:
                 return False
         # Ищем группу по имени
         else:
-            if  self.app.wd.find_element_by_xpath("//input[contains(@title, 'Select (" + name + ")')]"):
+            if  self.app.wd.find_elements_by_xpath("//input[contains(@title, 'Select (" + name + ")')]"):
                 return True
             else:
                 return False

@@ -5,7 +5,7 @@
 from model import *
 
 # Тест - удаление первой в списке группы контактов
-def test_delete_group(app):
+def test_delete_contact(app):
     app.session.to_homepage()
     if not app.contacts.is_contact_exist():
         # Контактов нет - создадим
@@ -25,4 +25,4 @@ def test_delete_group(app):
     assert len(old_contacts) - 1 == len(new_contacts)
     # Сравниваем списки по содержимому
     old_contacts[0:1] = []
-    assert old_contacts == new_contacts
+    assert old_contacts.sort() == new_contacts.sort()

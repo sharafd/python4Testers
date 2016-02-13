@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Контакты
+from sys import maxsize
 
 class Contacts:
     
@@ -36,4 +37,10 @@ class Contacts:
         return "%s" % (self.id)
 
     def __eq__(self, other):
-        return self.id == other.id
+        return (self.id is None or other.id is None or self.id == other.id)
+
+    def id_or_max(self):
+        if self.id:
+            return int(self.id)
+        else:
+            return maxsize
