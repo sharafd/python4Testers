@@ -25,6 +25,9 @@ class GroupsHelper:
         if not (self.app.wd.current_url.endswith("/group.php") and len(self.app.wd.find_elements_by_name("new")) > 0):
             self.app.wd.find_element_by_link_text("groups").click()
 
+    def select_group_by_index(self, index):
+        self.app.wd.find_elements_by_name("selected[]")[index].click()
+
     # Создание новой группы контактов
     def add_new_contacts_group(self, groups):
         self.open_groups_page()
@@ -33,12 +36,16 @@ class GroupsHelper:
         self.app.wd.find_element_by_name("submit").click()
         self.group_cache = None
 
-    # Удаление первой сверху группы контактов в списке
-    def delete_first_contacts_group(self):
+    # Удаление группы контактов в списке по номеру в списке сверху вниз
+    def delete_contacts_group_by_position(self, index):
         self.open_groups_page()
-        self.app.wd.find_element_by_name("selected[]").click()
+        self.select_group_by_index(index)
         self.app.wd.find_element_by_name("delete").click()
         self.group_cache = None
+
+    # Удаление первой сверху группы контактов в списке
+    def delete_first_contacts_group(self):
+        self.delete_contacts_group_by_position(0)
 
     # Удаление группы контактов по имени
     def delete_contacts_group_by_name(self, name):
@@ -49,7 +56,7 @@ class GroupsHelper:
         self.group_cache = None
         return gid
 
-    # Редактирование группы контактов
+    # Редактирование группы контактов по имеии
     def edit_contacts_group_by_name(self, name, groups):
         self.open_groups_page()
         gid = self.app.wd.find_element_by_xpath("//input[contains(@title, 'Select (" + name + ")')]").get_attribute("value")
@@ -60,14 +67,19 @@ class GroupsHelper:
         self.group_cache = None
         return gid
 
-    # Редактирование первой сверху группы контактов
-    def edit_first_contacts_group(self, groups):
+    # Редактирование  группы контактов в списке по номеру в списке сверху вниз
+    def edit_contacts_group_by_position(self, index, groups):
         self.open_groups_page()
-        self.app.wd.find_element_by_name("selected[]").click()
+        gid = self.select_group_by_index(index)
         self.app.wd.find_element_by_name("edit").click()
         self.fill_group_params(groups)
         self.app.wd.find_element_by_name("update").click()
         self.group_cache = None
+        return gid
+
+    # Редактирование первой сверху группы контактов
+    def edit_first_contacts_group(self, groups):
+        self.edit_contacts_group_by_position(0, groups)
 
     # Проверка существования группы
     def is_group_exist(self, name=None):

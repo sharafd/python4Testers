@@ -10,6 +10,9 @@ class ContactsHelper:
 
     contacts_cache = None
 
+    def select_contact_by_index(self, index):
+        self.app.wd.find_elements_by_name("selected[]")[index].click()
+
     def fill_contact_params(self, contacts):
         if contacts.middlename is not None:
             self.app.wd.find_element_by_name("middlename").click()
@@ -123,18 +126,21 @@ class ContactsHelper:
         self.app.wd.find_element_by_xpath("//input[@type='submit' and @name='submit' and @value='Enter']").click()
         self.contacts_cache = None
 
-    # Удаление первого сверху контакта в списке
-    def delete_first_contact(self):
-        self.app.wd.find_element_by_name("selected[]").click()
+    # Удаление контактa по номеру в списке сверху вниз
+    def delete_contact_by_index(self, index):
+        self.select_contact_by_index(index)
         self.app.wd.find_element_by_xpath("//input[@type='button' and @value='Delete']").click()
         self.app.wd.switch_to_alert().accept()
         self.contacts_cache = None
 
-    # Редактирование первого сверху контакта в списке
-    def editFirstContact(self, contacts):
-        self.app.wd.find_element_by_name("selected[]").click()
-        self.app.wd.find_element_by_xpath("//img[@title ='Edit']").click()
+    # Удаление первого сверху контакта в списке
+    def delete_first_contact(self):
+        self.delete_contact_by_index(0)
 
+    # Редактирование контактa по номеру в списке сверху вниз
+    def edit_contact_by_index(self, index, contacts):
+        self.select_contact_by_index(index)
+        self.app.wd.find_element_by_xpath("//img[@title ='Edit']").click()
         if contacts.address is not None:
             self.app.wd.find_element_by_name("address").click()
             self.app.wd.find_element_by_name("address").clear()
@@ -143,8 +149,12 @@ class ContactsHelper:
         self.app.wd.find_element_by_xpath("//input[@type='submit' and @value='Update']").click()
         self.contacts_cache = None
 
+    # Редактирование первого сверху контакта в списке
+    def edit_first_contact(self, contacts):
+        self.edit_contact_by_index(0, contacts)
+
     # Удаление фото у первого сверху контакта в списке
-    def deleteFirstContactPhoto(self):
+    def delete_first_contact_photo(self):
         self.app.wd.find_element_by_name("selected[]").click()
         self.app.wd.find_element_by_xpath("//img[@title ='Edit']").click()
         self.app.wd.find_element_by_xpath("//input[@name='delete_photo']").click()
@@ -152,11 +162,10 @@ class ContactsHelper:
         self.contacts_cache = None
 
     # Редактирование первого сверху контакта в списке со страницы просмотра
-    def modifyFirstContact(self, contacts):
+    def modify_first_contact(self, contacts):
         self.app.wd.find_element_by_name("selected[]").click()
         self.app.wd.find_element_by_xpath("//img[@title ='Details']").click()
         self.app.wd.find_element_by_xpath("//input[@type='submit' and @value='Modify']").click()
-
         if contacts.address is not None:
             self.app.wd.find_element_by_name("address").click()
             self.app.wd.find_element_by_name("address").clear()
