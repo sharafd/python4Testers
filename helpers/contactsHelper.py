@@ -8,6 +8,8 @@ class ContactsHelper:
     def __init__(self, app):
         self.app = app
 
+    contacts_cache = None
+
     def fill_contact_params(self, contacts):
         if contacts.middlename is not None:
             self.app.wd.find_element_by_name("middlename").click()
@@ -118,14 +120,15 @@ class ContactsHelper:
             self.app.wd.find_element_by_name("address").send_keys(contacts.address)
         self.app.wd.find_element_by_xpath("//input[@type='submit' and @name='quickadd' and @value='Next']").click()
         self.fill_contact_params(contacts)
-
         self.app.wd.find_element_by_xpath("//input[@type='submit' and @name='submit' and @value='Enter']").click()
+        self.contacts_cache = None
 
     # Удаление первого сверху контакта в списке
     def delete_first_contact(self):
         self.app.wd.find_element_by_name("selected[]").click()
         self.app.wd.find_element_by_xpath("//input[@type='button' and @value='Delete']").click()
         self.app.wd.switch_to_alert().accept()
+        self.contacts_cache = None
 
     # Редактирование первого сверху контакта в списке
     def editFirstContact(self, contacts):
@@ -137,8 +140,8 @@ class ContactsHelper:
             self.app.wd.find_element_by_name("address").clear()
             self.app.wd.find_element_by_name("address").send_keys(contacts.address)
         self.fill_contact_params(contacts)
-
         self.app.wd.find_element_by_xpath("//input[@type='submit' and @value='Update']").click()
+        self.contacts_cache = None
 
     # Удаление фото у первого сверху контакта в списке
     def deleteFirstContactPhoto(self):
@@ -146,6 +149,7 @@ class ContactsHelper:
         self.app.wd.find_element_by_xpath("//img[@title ='Edit']").click()
         self.app.wd.find_element_by_xpath("//input[@name='delete_photo']").click()
         self.app.wd.find_element_by_xpath("//input[@type='submit' and @value='Update']").click()
+        self.contacts_cache = None
 
     # Редактирование первого сверху контакта в списке со страницы просмотра
     def modifyFirstContact(self, contacts):
@@ -158,8 +162,8 @@ class ContactsHelper:
             self.app.wd.find_element_by_name("address").clear()
             self.app.wd.find_element_by_name("address").send_keys(contacts.address)
         self.fill_contact_params(contacts)
-
         self.app.wd.find_element_by_xpath("//input[@type='submit' and @value='Update']").click()
+        self.contacts_cache = None
 
     # Проверка существования контактов в принципе
     def is_contact_exist(self):
@@ -170,9 +174,14 @@ class ContactsHelper:
 
     #Список контактов
     def get_contacts_list(self):
-        c_list = []
-        for element in self.app.wd.find_elements_by_xpath("//tr[@name='entry']"):
-            value = element.find_element_by_xpath("//input[@type='checkbox']").get_attribute("value")
-            address  =  element.find_element_by_xpath("//td[4]").text
-            c_list.append(Contacts(id = value, address = address))
-        return c_list
+        if self.contacts_cache is None:
+            self.contacts_cache  = []
+            for element in self.app.wd.find_elements_by_xpath("//tr[@name='entry']"):
+                value = element.find_element_by_xpath("//input[@type='checkbox']").get_attribute("value")
+                address  =  element.find_element_by_xpath("//td[4]").text
+                self.contacts_cache .append(Contacts(id = value, address = address))
+        return list(self.contacts_cache)
+
+    # Подсчёт кoличества контактов
+    def count(self):
+        return len(self.app.wd.find_elements_by_xpath("//tr[@name='entry']"))

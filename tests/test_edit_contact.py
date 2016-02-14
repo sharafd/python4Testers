@@ -30,11 +30,11 @@ def test_TestEditContact(app):
     new_contact.id = old_contacts[0].id
 
     app.contacts.editFirstContact(new_contact)
-    #  Получаем новый список контактов
     app.session.to_homepage()
-    new_contacts = app.contacts.get_contacts_list()
     # Сравниваем размер списков
-    assert len(old_contacts) == len(new_contacts)
+    assert len(old_contacts) == app.contacts.count()
+    #  Получаем новый список контактов
+    new_contacts = app.contacts.get_contacts_list()
     old_contacts[0] = new_contact
     assert sorted(old_contacts, key=Contacts.id_or_max) == sorted(new_contacts, key=Contacts.id_or_max)
 
@@ -49,11 +49,11 @@ def test_TestDelContactPhoto(app):
     new_contact.id = old_contacts[0].id
 
     app.contacts.deleteFirstContactPhoto()
-    #  Получаем новый список контактов
     app.session.to_homepage()
-    new_contacts = app.contacts.get_contacts_list()
     # Сравниваем размер списков
-    assert len(old_contacts) == len(new_contacts)
+    assert len(old_contacts) == app.contacts.count()
+    #  Получаем новый список контактов
+    new_contacts = app.contacts.get_contacts_list()
     old_contacts[0] = new_contact
     assert sorted(old_contacts, key=Contacts.id_or_max) == sorted(new_contacts, key=Contacts.id_or_max)
 
@@ -68,11 +68,11 @@ def test_TestModifyContact(app):
     old_contacts= app.contacts.get_contacts_list()
     new_contact.id = old_contacts[0].id
     app.contacts.modifyFirstContact(new_contact)
-    #  Получаем новый список контактов
     app.session.to_homepage()
-    new_contacts = app.contacts.get_contacts_list()
     # Сравниваем размер списков
-    assert len(old_contacts) == len(new_contacts)
+    assert len(old_contacts)  == app.contacts.count()
+    #  Получаем новый список контактов
+    new_contacts = app.contacts.get_contacts_list()
     # Сравниваем списки по содержимому
     old_contacts[0] = new_contact
     assert sorted(old_contacts, key=Contacts.id_or_max) == sorted(new_contacts, key=Contacts.id_or_max)

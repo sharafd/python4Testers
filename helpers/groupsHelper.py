@@ -8,6 +8,8 @@ class GroupsHelper:
     def __init__(self, app):
         self.app = app
 
+    group_cache = None
+
     def type_value(self, field_name, text):
         if text is not None:
             self.app.wd.find_element_by_name(field_name).click()
@@ -26,19 +28,17 @@ class GroupsHelper:
     # Создание новой группы контактов
     def add_new_contacts_group(self, groups):
         self.open_groups_page()
-
         self.app.wd.find_element_by_name("new").click()
-
         self.fill_group_params(groups)
-
         self.app.wd.find_element_by_name("submit").click()
+        self.group_cache = None
 
-    # Удаление первой сверху группы контакоов в списке
+    # Удаление первой сверху группы контактов в списке
     def delete_first_contacts_group(self):
         self.open_groups_page()
-
         self.app.wd.find_element_by_name("selected[]").click()
         self.app.wd.find_element_by_name("delete").click()
+        self.group_cache = None
 
     # Удаление группы контактов по имени
     def delete_contacts_group_by_name(self, name):
@@ -46,6 +46,7 @@ class GroupsHelper:
         gid = self.app.wd.find_element_by_xpath("//input[contains(@title, 'Select (" + name + ")')]").get_attribute("value")
         self.app.wd.find_element_by_xpath("//input[contains(@title, 'Select (" + name + ")')]").click()
         self.app.wd.find_element_by_name("delete").click()
+        self.group_cache = None
         return gid
 
     # Редактирование группы контактов
@@ -56,18 +57,17 @@ class GroupsHelper:
         self.app.wd.find_element_by_name("edit").click()
         self.fill_group_params(groups)
         self.app.wd.find_element_by_name("update").click()
+        self.group_cache = None
         return gid
 
     # Редактирование первой сверху группы контактов
     def edit_first_contacts_group(self, groups):
         self.open_groups_page()
-
         self.app.wd.find_element_by_name("selected[]").click()
         self.app.wd.find_element_by_name("edit").click()
-
         self.fill_group_params(groups)
-
         self.app.wd.find_element_by_name("update").click()
+        self.group_cache = None
 
     # Проверка существования группы
     def is_group_exist(self, name=None):
@@ -87,10 +87,16 @@ class GroupsHelper:
 
     # Cписок групп
     def get_groups_list(self):
-        gr_list = []
+        if self.group_cache is None:
+          self.group_cache = []
+          self.open_groups_page()
+          for element in self.app.wd.find_elements_by_name("selected[]"):
+              text = element.get_attribute("title")
+              id = element.get_attribute("value")
+              self.group_cache.append(Groups(id = id, name = text))
+        return list(self.group_cache)
+
+    # Подсчёт кoличества групп
+    def count(self):
         self.open_groups_page()
-        for element in self.app.wd.find_elements_by_name("selected[]"):
-            text = element.get_attribute("title")
-            id = element.get_attribute("value")
-            gr_list.append(Groups(id = id, name = text))
-        return gr_list
+        return len(self.app.wd.find_elements_by_name("selected[]"))

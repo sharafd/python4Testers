@@ -18,11 +18,11 @@ def test_TestAddContact(app):
                              email2="employee@company.org", email3="boss@foo.org", homepage="www.my.org", address2="Samara",
                              photo= root_dir + "/resources/avatar.png", phone2="+999", notes="++++++++++", bday="4", aday="14",
                              amonth= "July", bmonth= "May", group=None))
-    #  Получаем новый список контактов
     app.session.to_homepage()
-    new_contacts = app.contacts.get_contacts_list()
     # Сравниваем размер списков
-    assert len(old_contacts) + 1 == len(new_contacts)
+    assert len(old_contacts) + 1 == app.contacts.count()
+    #  Получаем новый список контактов
+    new_contacts = app.contacts.get_contacts_list()
     # Сравниваем списки по содержимому
     assert old_contacts.sort() == new_contacts.sort()
 
@@ -37,10 +37,10 @@ def test_TestAddContactToGroup(app):
                              title="Contact", company="MyCompany", home="Str, 7790", mobile="+700", work="", fax="", email2="", email3="fff@bar.ru",
                              homepage="www.my.org", address2="964646466", phone2="146546546", notes="++++++++++", bday="4", aday="6" , amonth= "July",
                              bmonth= "", photo= "", group="New_01"))
-    # Получаем новый список контактов
     app.session.to_homepage()
-    new_contacts = app.contacts.get_contacts_list()
     # Сравниваем размер списков
-    assert len(old_contacts) + 1 == len(new_contacts)
+    assert len(old_contacts) + 1 == app.contacts.count()
+    #  Получаем новый список контактов
+    new_contacts = app.contacts.get_contacts_list()
     # Сравниваем списки по содержимому
     assert old_contacts.sort() == new_contacts.sort()

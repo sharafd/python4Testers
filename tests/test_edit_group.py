@@ -16,10 +16,10 @@ def test_edit_group_by_name(app):
     old_groups = app.group.get_groups_list()
     # редактирование группы контактов по имени
     editgroup.id = app.group.edit_contacts_group_by_name(name = "New_01", groups = group)
+    # Сравниваем размер списков
+    assert len(old_groups) == app.group.count()
     #  Получаем норвый список групп
     new_groups = app.group.get_groups_list()
-    # Сравниваем размер списков
-    assert len(old_groups) == len(new_groups)
     # Сравниваем списки по содержимому
     editgroup.name = "Select ("+ editgroup.name +")"
     old_groups.remove(editgroup) # Удаляем отредактирорванную группу
@@ -41,10 +41,10 @@ def test_edit_first_contacts_group(app):
     group.id = old_groups[0].id
     # редактирование группы контактов
     app.group.edit_first_contacts_group(groups = group)
+    # Сравниваем размер списков
+    assert len(old_groups) == app.group.count()
     #  Получаем норвый список групп
     new_groups = app.group.get_groups_list()
-    # Сравниваем размер списков
-    assert len(old_groups) == len(new_groups)
     # Сравниваем списки по содержимому
     old_groups[0]= group
     old_groups[0].name = "Select ("+ group.name +")"

@@ -18,11 +18,11 @@ def test_delete_contact(app):
     old_contacts = app.contacts.get_contacts_list()
     # Удаляем группу контактов
     app.contacts.delete_first_contact()
-    #  Получаем новый список контактов
     app.session.to_homepage()
-    new_contacts = app.contacts.get_contacts_list()
     # Сравниваем размер списков
-    assert len(old_contacts) - 1 == len(new_contacts)
+    assert len(old_contacts) - 1 == app.contacts.count()
+    #  Получаем новый список контактов
+    new_contacts = app.contacts.get_contacts_list()
     # Сравниваем списки по содержимому
     old_contacts[0:1] = []
     assert old_contacts.sort() == new_contacts.sort()
