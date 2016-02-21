@@ -7,14 +7,21 @@ class SessionHelper:
     def __init__(self, app):
         self.app = app
 
+    # Проверка логина - на какой странице находимся
     def is_logged_in(self):
+        # ищем ссылку logout
         if len(self.app.wd.find_elements_by_link_text("Logout")) > 0:
             return True
         else:
             return False
 
+    # Получение имени пользователя
+    def get_logged_user(self):
+       return self.app.wd.find_element_by_xpath("//div/div[1]/form/b").text[1:-1]
+
+    # Проверка, под тем ли пользователем залогигились
     def is_logged_as(self, username):
-        if self.app.wd.find_element_by_xpath("//div/div[1]/form/b").text == "(" + username + ")":
+        if self.get_logged_user() == username:
             return True
         else:
             return False
@@ -35,6 +42,7 @@ class SessionHelper:
             self.app.wd.find_element_by_name("pass").send_keys(loginpage.password)
         self.app.wd.find_element_by_xpath("//input[@type='submit' and @value='Login']").click()
 
+    # Переход на главную страницу
     def to_homepage(self):
         if not (self.app.wd.current_url.endswith("/addressbook/") and len(self.app.wd.find_elements_by_xpath("//input[@type='button' and @value='Send e-Mail']")) > 0):
            self.app.wd.find_element_by_link_text("home").click()

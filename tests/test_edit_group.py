@@ -22,7 +22,7 @@ def test_edit_group_by_name(app):
     #  Получаем норвый список групп
     new_groups = app.group.get_groups_list()
     # Сравниваем списки по содержимому
-    editgroup.name = "Select ("+ editgroup.name +")"
+    editgroup.name = "Select " + "(%s)" % editgroup.name
     old_groups.remove(editgroup) # Удаляем отредактирорванную группу
     # записываем в списoк исправленную группу
     group.id = editgroup.id
@@ -37,7 +37,7 @@ def test_edit_first_contacts_group(app):
     if app.group.is_group_exist():
         # групп нет - надо создать
         app.group.add_new_contacts_group(Groups(name="New_01"))
-     # Запoминаем список групп
+    # Запoминаем список групп
     old_groups = app.group.get_groups_list()
     group.id = old_groups[0].id
     # редактирование группы контактов
@@ -48,7 +48,7 @@ def test_edit_first_contacts_group(app):
     new_groups = app.group.get_groups_list()
     # Сравниваем списки по содержимому
     old_groups[0]= group
-    old_groups[0].name = "Select ("+ group.name +")"
+    old_groups[0].name = "Select " + "(%s)" % group.name
     assert sorted(old_groups, key=Groups.id_or_max) == sorted(new_groups, key=Groups.id_or_max)
 
 # Тест - редактирование группы контактов
@@ -58,7 +58,7 @@ def test_edit_random_contacts_group(app):
     if app.group.count == 0:
         # групп нет - надо создать
         app.group.add_new_contacts_group(Groups(name="New_01"))
-     # Запoминаем список групп
+    # Запoминаем список групп
     old_groups = app.group.get_groups_list()
     # случайнор выбираем группу
     index = randrange(len(old_groups))
@@ -71,5 +71,5 @@ def test_edit_random_contacts_group(app):
     new_groups = app.group.get_groups_list()
     # Сравниваем списки по содержимому
     old_groups[index]= group
-    old_groups[index].name = "Select ("+ group.name +")"
+    old_groups[index].name = "Select " + "(%s)" % group.name
     assert sorted(old_groups, key=Groups.id_or_max) == sorted(new_groups, key=Groups.id_or_max)

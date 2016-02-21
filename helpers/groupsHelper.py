@@ -50,8 +50,8 @@ class GroupsHelper:
     # Удаление группы контактов по имени
     def delete_contacts_group_by_name(self, name):
         self.open_groups_page()
-        gid = self.app.wd.find_element_by_xpath("//input[contains(@title, 'Select (" + name + ")')]").get_attribute("value")
-        self.app.wd.find_element_by_xpath("//input[contains(@title, 'Select (" + name + ")')]").click()
+        gid = self.app.wd.find_element_by_xpath("//input[contains(@title, 'Select " +  "(%s)" % name + "')]").get_attribute("value")
+        self.app.wd.find_element_by_xpath("//input[contains(@title, 'Select " +  "(%s)" % name + "')]").click()
         self.app.wd.find_element_by_name("delete").click()
         self.group_cache = None
         return gid
@@ -59,8 +59,8 @@ class GroupsHelper:
     # Редактирование группы контактов по имеии
     def edit_contacts_group_by_name(self, name, groups):
         self.open_groups_page()
-        gid = self.app.wd.find_element_by_xpath("//input[contains(@title, 'Select (" + name + ")')]").get_attribute("value")
-        self.app.wd.find_element_by_xpath("//input[contains(@title, 'Select (" + name + ")')]").click()
+        gid = self.app.wd.find_element_by_xpath("//input[contains(@title, 'Select " +  "(%s)" % name + "')]").get_attribute("value")
+        self.app.wd.find_element_by_xpath("//input[contains(@title, 'Select " +  "(%s)" % name + "')]").click()
         self.app.wd.find_element_by_name("edit").click()
         self.fill_group_params(groups)
         self.app.wd.find_element_by_name("update").click()
@@ -92,7 +92,7 @@ class GroupsHelper:
                 return False
         # Ищем группу по имени
         else:
-            if  self.app.wd.find_elements_by_xpath("//input[contains(@title, 'Select (" + name + ")')]"):
+            if  self.app.wd.find_elements_by_xpath("//input[contains(@title, 'Select " +  "(%s)" % name + "')]"):
                 return True
             else:
                 return False
