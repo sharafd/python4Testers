@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 # Класс для работы с контактами
+import re
+
 from model import Contacts
 
 class ContactsHelper:
@@ -68,15 +70,15 @@ class ContactsHelper:
             self.app.wd.find_element_by_name("address").click()
             self.app.wd.find_element_by_name("address").clear()
             self.app.wd.find_element_by_name("address").send_keys(contacts.address)
-        if contacts.home is not None:
+        if contacts.home != "" and  contacts.home is not None:
             self.app.wd.find_element_by_name("home").click()
             self.app.wd.find_element_by_name("home").clear()
             self.app.wd.find_element_by_name("home").send_keys(contacts.home)
-        if contacts.mobile is not None:
+        if contacts.mobile != "" and contacts.mobile is not None:
             self.app.wd.find_element_by_name("mobile").click()
             self.app.wd.find_element_by_name("mobile").clear()
             self.app.wd.find_element_by_name("mobile").send_keys(contacts.mobile)
-        if contacts.work is not None:
+        if contacts.work != "" and contacts.work is not None:
             self.app.wd.find_element_by_name("work").click()
             self.app.wd.find_element_by_name("work").clear()
             self.app.wd.find_element_by_name("work").send_keys(contacts.work)
@@ -100,10 +102,10 @@ class ContactsHelper:
             self.app.wd.find_element_by_name("address2").click()
             self.app.wd.find_element_by_name("address2").clear()
             self.app.wd.find_element_by_name("address2").send_keys(contacts.address2)
-        if contacts.phone2 is not None:
+        if contacts.phone2 != "" and contacts.phone2 is not None:
             self.app.wd.find_element_by_name("phone2").click()
             self.app.wd.find_element_by_name("phone2").clear()
-            self.app.wd.find_element_by_name("phone2").send_keys(contacts.phone2)
+            self.app.wd.find_element_by_name("phone2").send_keys(contacts.phone2 + " <br/>")
         if contacts.notes is not None:
             self.app.wd.find_element_by_name("notes").click()
             self.app.wd.find_element_by_name("notes").clear()
@@ -186,11 +188,47 @@ class ContactsHelper:
         if self.contacts_cache is None:
             self.contacts_cache  = []
             for element in self.app.wd.find_elements_by_xpath("//tr[@name='entry']"):
-                value = element.find_element_by_xpath("//input[@type='checkbox']").get_attribute("value")
-                address  =  element.find_element_by_xpath("//td[4]").text
-                self.contacts_cache .append(Contacts(id = value, address = address))
+             #   value = element.find_element_by_xpath("//input[@type='checkbox']").get_attribute("value")
+             #   address  =  element.find_element_by_xpath("//td[4]").text
+                cells = element.find_elements_by_tag_name("td")
+                value = cells[0].find_element_by_tag_name("input").get_attribute("value")
+                address = cells[3].text
+                allphones = cells[5].text.splitlines()
+                self.contacts_cache .append(Contacts(id = value, address = address, home = allphones[0], mobile = allphones[1],
+                                                     work = allphones[2]))
         return list(self.contacts_cache)
 
     # Подсчёт кoличества контактов
     def count(self):
-        return len(self.app.wd.find_elements_by_xpath("//tr[@name='entry']"))
+       return len(self.app.wd.find_elements_by_xpath("//tr[@name='entry']"))
+
+    # Вырезаем символы
+    def clear(self,s):
+        return re.sub("[() -]","",s)
+
+    # Получение данных контакта из диалога редактирования
+    def get_contact_info_from_edit_page(self, index):
+       self.select_contact_by_index(index)
+       self.app.wd.find_element_by_xpath("//img[@title ='Edit']").click()
+
+       firstname = self.app.wd.find_element_by_xpath("//input[@name='firstname']").get_attribute("value")
+       lastname = self.app.wd.find_element_by_xpath("//input[@name='lastname']").get_attribute("value")
+       id = self.app.wd.find_element_by_xpath("//input[@name='id']").get_attribute("value")
+       home = self.app.wd.find_element_by_xpath("//input[@name='home']").get_attribute("value")
+       work = self.app.wd.find_element_by_xpath("//input[@name='work']").get_attribute("value")
+       phone2 = self.app.wd.find_element_by_xpath("//input[@name='phone2']").get_attribute("value")
+       mobile = self.app.wd.find_element_by_xpath("//input[@name='mobile']").get_attribute("value")
+
+       return Contacts(id = id, firstname = firstname, lastname = lastname, home = self.clear(home),
+                       mobile = self.clear(mobile), work = self.clear(work), phone2 = self.clear(phone2))
+
+    def get_contact_info_from_view_page(self, index):
+      # self.select_contact_by_index(index)
+       self.app.wd.find_element_by_xpath("//img[@title ='Details']").click()
+
+       text = self.app.wd.find_element_by_xpath("//div[@id='content']")
+       home = re.search("H: *", text).group(1)
+       work = re.search("W: *", text).group(1)
+       mobile = re.search("M: *", text).group(1)
+       phone2 = re.search("P: *", text).group(1)
+       return Contacts(home = home, mobile = mobile, work = work, phone2 = phone2)
