@@ -105,7 +105,7 @@ class ContactsHelper:
         if contacts.phone2 != "" and contacts.phone2 is not None:
             self.app.wd.find_element_by_name("phone2").click()
             self.app.wd.find_element_by_name("phone2").clear()
-            self.app.wd.find_element_by_name("phone2").send_keys(contacts.phone2 + " <br/>")
+            self.app.wd.find_element_by_name("phone2").send_keys(contacts.phone2)
         if contacts.notes is not None:
             self.app.wd.find_element_by_name("notes").click()
             self.app.wd.find_element_by_name("notes").clear()
@@ -219,16 +219,16 @@ class ContactsHelper:
        phone2 = self.app.wd.find_element_by_xpath("//input[@name='phone2']").get_attribute("value")
        mobile = self.app.wd.find_element_by_xpath("//input[@name='mobile']").get_attribute("value")
 
-       return Contacts(id = id, firstname = firstname, lastname = lastname, home = self.clear(home),
-                       mobile = self.clear(mobile), work = self.clear(work), phone2 = self.clear(phone2))
+       return Contacts(id = id, firstname = firstname, lastname = lastname, home = home,
+                       mobile = mobile, work = work, phone2 = phone2)
 
     def get_contact_info_from_view_page(self, index):
       # self.select_contact_by_index(index)
        self.app.wd.find_element_by_xpath("//img[@title ='Details']").click()
 
-       text = self.app.wd.find_element_by_xpath("//div[@id='content']")
-       home = re.search("H: *", text).group(1)
-       work = re.search("W: *", text).group(1)
-       mobile = re.search("M: *", text).group(1)
-       phone2 = re.search("P: *", text).group(1)
+       text = self.app.wd.find_element_by_xpath("//div[@id='content']").text
+       home = re.search("H: (.*)", text).group(1)
+       work = re.search("W: (.*)", text).group(1)
+       mobile = re.search("M: (.*)", text).group(1)
+       phone2 = re.search("P: (.*)", text).group(1)
        return Contacts(home = home, mobile = mobile, work = work, phone2 = phone2)
