@@ -4,6 +4,9 @@
 import re
 
 from model import Contacts
+from func import commonFunctions
+
+common = commonFunctions.Common()
 
 class ContactsHelper:
 
@@ -12,9 +15,11 @@ class ContactsHelper:
 
     contacts_cache = None
 
+    # Выбор контакта по индексу сверхy вниз
     def select_contact_by_index(self, index):
         self.app.wd.find_elements_by_name("selected[]")[index].click()
 
+    # Заполнение формы редактирования
     def fill_contact_params(self, contacts):
         if contacts.middlename is not None:
             self.app.wd.find_element_by_name("middlename").click()
@@ -74,6 +79,10 @@ class ContactsHelper:
             self.app.wd.find_element_by_name("home").click()
             self.app.wd.find_element_by_name("home").clear()
             self.app.wd.find_element_by_name("home").send_keys(contacts.home)
+        if contacts.email != "" and  contacts.email is not None:
+            self.app.wd.find_element_by_name("email").click()
+            self.app.wd.find_element_by_name("email").clear()
+            self.app.wd.find_element_by_name("email").send_keys(contacts.home)
         if contacts.mobile != "" and contacts.mobile is not None:
             self.app.wd.find_element_by_name("mobile").click()
             self.app.wd.find_element_by_name("mobile").clear()
@@ -192,9 +201,12 @@ class ContactsHelper:
              #   address  =  element.find_element_by_xpath("//td[4]").text
                 cells = element.find_elements_by_tag_name("td")
                 value = cells[0].find_element_by_tag_name("input").get_attribute("value")
+                firstname = cells[1].text
+                lastname = cells[2].text
                 address = cells[3].text
                 allphones = cells[5].text.splitlines()
-                self.contacts_cache .append(Contacts(id = value, address = address, home = allphones[0], mobile = allphones[1],
+                self.contacts_cache.append(Contacts(id = value, firstname = firstname, lastname = lastname, address = address,
+                                                     home = allphones[0], mobile = allphones[1],
                                                      work = allphones[2]))
         return list(self.contacts_cache)
 
@@ -202,11 +214,7 @@ class ContactsHelper:
     def count(self):
        return len(self.app.wd.find_elements_by_xpath("//tr[@name='entry']"))
 
-    # Вырезаем символы
-    def clear(self,s):
-        return re.sub("[() -]","",s)
-
-    # Получение данных контакта из диалога редактирования
+    # Получение данных контакта из диалога редактирования (нарезка)
     def get_contact_info_from_edit_page(self, index):
        self.select_contact_by_index(index)
        self.app.wd.find_element_by_xpath("//img[@title ='Edit']").click()
@@ -222,8 +230,8 @@ class ContactsHelper:
        return Contacts(id = id, firstname = firstname, lastname = lastname, home = home,
                        mobile = mobile, work = work, phone2 = phone2)
 
+    # Получение данных контакта из диалога редактирования (нарезка)
     def get_contact_info_from_view_page(self, index):
-      # self.select_contact_by_index(index)
        self.app.wd.find_element_by_xpath("//img[@title ='Details']").click()
 
        text = self.app.wd.find_element_by_xpath("//div[@id='content']").text
@@ -231,4 +239,59 @@ class ContactsHelper:
        work = re.search("W: (.*)", text).group(1)
        mobile = re.search("M: (.*)", text).group(1)
        phone2 = re.search("P: (.*)", text).group(1)
+
        return Contacts(home = home, mobile = mobile, work = work, phone2 = phone2)
+
+    # Поиск контакта по адресу
+    def get_contact_index_by_address(self, address):
+       index = -1
+       i = -1
+
+       for element in self.app.wd.find_elements_by_xpath("//tr[@name='entry']"):
+           i = i + 1
+           cells = element.find_elements_by_tag_name("td")
+           if address == cells[3].text:
+               index = i
+               break
+       return int(index)
+
+     #Список контактов (скленные строки)
+    def get_contacts_list_merged(self):
+       # if self.contacts_cache is None:
+        self.contacts_cache  = []
+        for element in self.app.wd.find_elements_by_xpath("//tr[@name='entry']"):
+                cells = element.find_elements_by_tag_name("td")
+                value = cells[0].find_element_by_tag_name("input").get_attribute("value")
+                firstname = cells[1].text
+                lastname = cells[2].text
+                address = cells[3].text
+                allphones = cells[5].text
+                self.contacts_cache.append(Contacts(id = value, address = address, firstname = firstname, lastname = lastname,
+                                                     all_phones_from_home_page = allphones))
+        return list(self.contacts_cache)
+
+
+    # Получение данных контакта из диалога редактирования (склейка)
+    def get_contact_info_from_edit_page_(self, index):
+       self.select_contact_by_index(index)
+       self.app.wd.find_element_by_xpath("//img[@title ='Edit']").click()
+
+       firstname = self.app.wd.find_element_by_xpath("//input[@name='firstname']").get_attribute("value")
+       lastname = self.app.wd.find_element_by_xpath("//input[@name='lastname']").get_attribute("value")
+       id = self.app.wd.find_element_by_xpath("//input[@name='id']").get_attribute("value")
+       home = self.app.wd.find_element_by_xpath("//input[@name='home']").get_attribute("value")
+       work = self.app.wd.find_element_by_xpath("//input[@name='work']").get_attribute("value")
+       phone2 = self.app.wd.find_element_by_xpath("//input[@name='phone2']").get_attribute("value")
+       mobile = self.app.wd.find_element_by_xpath("//input[@name='mobile']").get_attribute("value")
+
+       return Contacts(id = id, firstname = firstname, lastname = lastname, home = home,
+                       mobile = mobile, work = work, phone2 = phone2)
+
+    def merge_phones_like_on_home_page(self, contact):
+
+        res = "\n".join(
+                map(
+                    lambda x: common.clear(x, "[() -]"),[contact.home, contact.mobile, contact.work, contact.phone2]))
+        return filter(
+                lambda x: x !="", filter(
+                        lambda x: x is not None, res))

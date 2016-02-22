@@ -1,0 +1,32 @@
+# -*- coding: utf-8 -*-
+
+# Общие вспомогательные функции
+import random
+import re, string
+
+class Common:
+
+    # Вырезаем символы по шаблону
+    def clear(self,s, pattern):
+        return re.sub(pattern,"",s)
+
+    # Случайная строка из цифр
+    # count - количество символов в строке
+    def random_digits(selfself, count = None):
+       if count is None:
+           count = int(random.choice(string.digits))
+       return "".join([random.choice(string.digits) for i in range(count)])
+
+    # Случайная строка
+    # count - количество символов в строке
+    def random_ascii_string(self, count = None):
+        if count is None:
+           count = int(random.choice(string.digits))
+        return "".join([random.choice(string.ascii_letters) for i in range(count)])
+
+    # Случайная строка (буквы и цифры)
+    # count - количество символов в строке
+    def random_string(self, count = None):
+       if count is None:
+           count = int(random.choice(string.digits))
+       return "".join([random.choice(string.ascii_letters + string.digits) for i in range(count)])

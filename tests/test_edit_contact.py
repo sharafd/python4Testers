@@ -15,7 +15,7 @@ contact = Contacts(Contacts(address="Qwerty00", middlename="foo", lastname="Bar"
                              amonth= "July", bmonth= "May", group=""))
 new_contact = Contacts(Contacts(address="Qwerty00", middlename="foo", lastname="Bar", nickname="boo", byear="1988", ayear="2000",
                              title="Contact", company="", home="56565", mobile="566(8)", work="4564", fax="545454554",
-                             email2="", email3="", homepage="", address2="Samara",
+                             email2="", email3="", homepage="", address2="Samara",email = "mymail@hosting.com",
                              photo= root_dir + "/resources/avatar.png", phone2="+9(5)-78-99", notes="++++++++++", bday="4", aday="14",
                              amonth= "July", bmonth= "May", group=""))
 

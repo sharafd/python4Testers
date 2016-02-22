@@ -2,11 +2,13 @@
 
 # Проверки групп контактов - добавление
 from model import Groups
+from func import commonFunctions
+common = commonFunctions.Common()
 
  # Тест - создание группы контактов
 def test_add_group(app):
     # Параметры группы контактов
-    group = Groups(name="New_01", header="+", footer="------------")
+    group = Groups(name=common.random_string(15), header=common.random_digits(5), footer=common.random_ascii_string())
     # Запоминаем список групп
     old_groups = app.group.get_groups_list()
     # Создаём группу контактов
