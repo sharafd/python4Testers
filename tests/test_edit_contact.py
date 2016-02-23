@@ -8,7 +8,7 @@ from model import Contacts
 
 root_dir = os.path.abspath(os.path.dirname(__file__))
 
-contact = Contacts(Contacts(address="Qwerty00", middlename="foo", lastname="Bar", nickname="boo", byear="1988", ayear="2000",
+contact = Contacts(Contacts(address=common.random_string(15), middlename="foo", lastname="Bar", nickname="boo", byear="1988", ayear="2000",
                              title="Contact", company="", home="11", mobile="444", work="5656", fax="545454554",
                              email2="", email3="", homepage="", address2="Samara",
                              photo= root_dir + "/resources/avatar.png", phone2="+999", notes="++++++++++", bday="4", aday="14",

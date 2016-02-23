@@ -33,6 +33,10 @@ class ContactsHelper:
 
     # Заполнение формы редактирования
     def fill_contact_params(self, contacts):
+        if contacts.firstname is not None:
+            self.app.wd.find_element_by_name("firstname").click()
+            self.app.wd.find_element_by_name("firstname").clear()
+            self.app.wd.find_element_by_name("firstname").send_keys(contacts.firstname)
         if contacts.middlename is not None:
             self.app.wd.find_element_by_name("middlename").click()
             self.app.wd.find_element_by_name("middlename").clear()

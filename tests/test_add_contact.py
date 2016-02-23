@@ -2,7 +2,7 @@
 
 # Проверки контактов - добавление
 
-import time, os
+import os
 
 from model import *
 from func import commonFunctions
