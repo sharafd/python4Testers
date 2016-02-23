@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Проверки групп контактов - телефоны
+from random import randrange
 
 import os
 from model import Contacts
@@ -10,14 +11,17 @@ common = commonFunctions.Common()
 root_dir = os.path.abspath(os.path.dirname(__file__))
 contact = Contacts(address='phones_test', middlename=common.random_ascii_string(10), lastname=common.random_ascii_string(10),
                                      nickname=common.random_ascii_string(10), byear="1988", ayear="2000", email = "mymail@hosting.com",
-                             title="Contact", company="MyCompany", home="7790", mobile="+75-1", work="+951-705-96-11", fax="545454554",
+                             title="Contact", company="MyCompany", home="779", mobile="+75-1", work="+951-705-96-11", fax="545454554",
                              email2="employee@company.org", email3="boss@foo.org", homepage="www.my.org", address2="Samara",
                              photo= root_dir + "/resources/avatar.png", phone2="+999(55)6", notes="++++++++++", bday="4", aday="14",
                              amonth= "July", bmonth= "May", group=None)
 
+# Телефоны на главной странице - прямая проверка
 def test_phones_on_homepage_split(app):
 
     app.session.to_homepage()
+    #Принудительная очистка кеша
+    app.contacts.clear_cache()
     # Ищем контакт с правильно заполненными телефонами
     index = app.contacts.get_contact_index_by_address("phones_test")
     if -1 == index:
@@ -32,11 +36,13 @@ def test_phones_on_homepage_split(app):
     assert(contacts_from_phone_app.home == common.clear(contacts_from_edit_page.home,"[() -]"))
     assert(contacts_from_phone_app.mobile == common.clear(contacts_from_edit_page.mobile,"[() -]"))
     assert(contacts_from_phone_app.work == common.clear(contacts_from_edit_page.work,"[() -]"))
+  #  assert(contacts_from_phone_app.phone2 == common.clear(contacts_from_edit_page.phone2,"[() -]"))
 
-
+# Телефоны на странице просмотра - прямая проверка
 def test_phones_on_viewpage_split(app):
-
     app.session.to_homepage()
+    #Принудительная очистка кеша
+    app.contacts.clear_cache()
     # Ищем контакт с правильно заполненными телефонами
     index = app.contacts.get_contact_index_by_address("phones_test")
     if -1 == index:
@@ -56,7 +62,7 @@ def test_phones_on_viewpage_split(app):
     assert(contacts_from_edit_page.work == contacts_from_view_page.work)
     assert(contacts_from_edit_page.phone2 == contacts_from_view_page.phone2)
 
-
+# Телефоны на главной странице - обратная проверка
 def test_phones_on_homepage_merge(app):
 
     app.session.to_homepage()
@@ -65,7 +71,13 @@ def test_phones_on_homepage_merge(app):
         app.contacts.addContact(contact)
         app.session.to_homepage()
 
-    contacts_from_phone_app = app.contacts.get_contacts_list_merged()[0]
-    contacts_from_edit_page = app.contacts.get_contact_info_from_edit_page(0)
+    # Принудительная очистка кеша
+    app.contacts.clear_cache()
+
+    # Cлучайным образом выбираем контакт
+    index = randrange(app.contacts.count())
+
+    contacts_from_phone_app = app.contacts.get_contacts_list_merged()[index]
+    contacts_from_edit_page = app.contacts.get_contact_info_from_edit_page(index)
 
     assert(contacts_from_phone_app.all_phones_from_home_page == app.contacts.merge_phones_like_on_home_page(contacts_from_edit_page))

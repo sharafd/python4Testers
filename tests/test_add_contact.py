@@ -13,7 +13,7 @@ def test_TestAddContact(app):
     root_dir = os.path.abspath(os.path.dirname(__file__))
     app.session.to_homepage()
     # Запoминаем список контактов
-    old_contacts= app.contacts.get_contacts_list()
+    old_contacts = app.contacts.get_contacts_list()
 
     app.contacts.addContact(Contacts(address=common.random_ascii_string(10), middlename=common.random_ascii_string(10), lastname=common.random_ascii_string(10),
                                      nickname=common.random_ascii_string(10), byear="1988", ayear="2000",email = "mymail@hosting.com",
@@ -35,7 +35,7 @@ def test_TestAddContactToGroup(app):
         # группы нет - надо создать
         app.group.add_new_contacts_group(Groups(name="New_01"))
     app.session.to_homepage()
-    old_contacts= app.contacts.get_contacts_list()
+    old_contacts = app.contacts.get_contacts_list()
     app.contacts.addContact(Contacts(address="Qwerty", middlename="foo", lastname="Bar", nickname="boo", byear="1988", ayear="2000",email = "mymail@hosting.com",
                              title="Contact", company="MyCompany", home="S779", mobile="+76-6", work="56641646", fax="", email2="", email3="fff@bar.ru",
                              homepage="www.my.org", address2="964646466", phone2="146546546", notes="++++++++++", bday="4", aday="6" , amonth= "July",

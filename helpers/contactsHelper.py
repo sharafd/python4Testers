@@ -19,6 +19,18 @@ class ContactsHelper:
     def select_contact_by_index(self, index):
         self.app.wd.find_elements_by_name("selected[]")[index].click()
 
+    # Выбор контакта по индексу сверхy вниз для редактирования
+    def select_contact_for_edit_by_index(self, index):
+        row = self.app.wd.find_elements_by_name("entry")[index]
+        cell = row.find_elements_by_tag_name("td")[7]
+        cell.find_element_by_tag_name("a").click()
+
+    # Выбор контакта по индексу сверхy вниз для просмотра
+    def select_contact_for_view_by_index(self, index):
+        row = self.app.wd.find_elements_by_name("entry")[index]
+        cell = row.find_elements_by_tag_name("td")[6]
+        cell.find_element_by_tag_name("a").click()
+
     # Заполнение формы редактирования
     def fill_contact_params(self, contacts):
         if contacts.middlename is not None:
@@ -82,7 +94,7 @@ class ContactsHelper:
         if contacts.email != "" and  contacts.email is not None:
             self.app.wd.find_element_by_name("email").click()
             self.app.wd.find_element_by_name("email").clear()
-            self.app.wd.find_element_by_name("email").send_keys(contacts.home)
+            self.app.wd.find_element_by_name("email").send_keys(contacts.email)
         if contacts.mobile != "" and contacts.mobile is not None:
             self.app.wd.find_element_by_name("mobile").click()
             self.app.wd.find_element_by_name("mobile").clear()
@@ -150,8 +162,9 @@ class ContactsHelper:
 
     # Редактирование контактa по номеру в списке сверху вниз
     def edit_contact_by_index(self, index, contacts):
-        self.select_contact_by_index(index)
-        self.app.wd.find_element_by_xpath("//img[@title ='Edit']").click()
+      #  self.select_contact_by_index(index)
+      #  self.app.wd.find_element_by_xpath("//img[@title ='Edit']").click()
+        self.select_contact_for_edit_by_index(index)
         if contacts.address is not None:
             self.app.wd.find_element_by_name("address").click()
             self.app.wd.find_element_by_name("address").clear()
@@ -170,7 +183,6 @@ class ContactsHelper:
         self.app.wd.find_element_by_xpath("//img[@title ='Edit']").click()
         self.app.wd.find_element_by_xpath("//input[@name='delete_photo']").click()
         self.app.wd.find_element_by_xpath("//input[@type='submit' and @value='Update']").click()
-        self.contacts_cache = None
 
     # Редактирование первого сверху контакта в списке со страницы просмотра
     def modify_first_contact(self, contacts):
@@ -204,10 +216,27 @@ class ContactsHelper:
                 firstname = cells[1].text
                 lastname = cells[2].text
                 address = cells[3].text
+                allmails = cells[4].text.splitlines()
                 allphones = cells[5].text.splitlines()
                 self.contacts_cache.append(Contacts(id = value, firstname = firstname, lastname = lastname, address = address,
-                                                     home = allphones[0], mobile = allphones[1],
-                                                     work = allphones[2]))
+                                                     home = allphones[0], mobile = allphones[1], work = allphones[2],
+                                                     email = allmails[0], email2 = allmails[1]))
+        return list(self.contacts_cache)
+
+    #Список контактов (склейка)
+    def get_contacts_list_merged(self):
+        if self.contacts_cache is None:
+            self.contacts_cache  = []
+            for element in self.app.wd.find_elements_by_xpath("//tr[@name='entry']"):
+                cells = element.find_elements_by_tag_name("td")
+                value = cells[0].find_element_by_tag_name("input").get_attribute("value")
+                firstname = cells[1].text
+                lastname = cells[2].text
+                address = cells[3].text
+                allmails = cells[4].text
+                allphones = cells[5].text
+                self.contacts_cache.append(Contacts(id = value, address = address, firstname = firstname, lastname = lastname,
+                                                    all_phones_from_home_page = allphones, all_emails_from_home_page = allmails))
         return list(self.contacts_cache)
 
     # Подсчёт кoличества контактов
@@ -216,8 +245,7 @@ class ContactsHelper:
 
     # Получение данных контакта из диалога редактирования (нарезка)
     def get_contact_info_from_edit_page(self, index):
-       self.select_contact_by_index(index)
-       self.app.wd.find_element_by_xpath("//img[@title ='Edit']").click()
+       self.select_contact_for_edit_by_index(index)
 
        firstname = self.app.wd.find_element_by_xpath("//input[@name='firstname']").get_attribute("value")
        lastname = self.app.wd.find_element_by_xpath("//input[@name='lastname']").get_attribute("value")
@@ -226,13 +254,16 @@ class ContactsHelper:
        work = self.app.wd.find_element_by_xpath("//input[@name='work']").get_attribute("value")
        phone2 = self.app.wd.find_element_by_xpath("//input[@name='phone2']").get_attribute("value")
        mobile = self.app.wd.find_element_by_xpath("//input[@name='mobile']").get_attribute("value")
+       email = self.app.wd.find_element_by_xpath("//input[@name='email']").get_attribute("value")
+       email2 = self.app.wd.find_element_by_xpath("//input[@name='email2']").get_attribute("value")
+       email3 = self.app.wd.find_element_by_xpath("//input[@name='email3']").get_attribute("value")
 
        return Contacts(id = id, firstname = firstname, lastname = lastname, home = home,
-                       mobile = mobile, work = work, phone2 = phone2)
+                       mobile = mobile, work = work, phone2 = phone2, email = email, email2 = email2, email3 = email3)
 
     # Получение данных контакта из диалога редактирования (нарезка)
     def get_contact_info_from_view_page(self, index):
-       self.app.wd.find_element_by_xpath("//img[@title ='Details']").click()
+       self.select_contact_for_view_by_index(index)
 
        text = self.app.wd.find_element_by_xpath("//div[@id='content']").text
        home = re.search("H: (.*)", text).group(1)
@@ -255,43 +286,24 @@ class ContactsHelper:
                break
        return int(index)
 
-     #Список контактов (скленные строки)
-    def get_contacts_list_merged(self):
-       # if self.contacts_cache is None:
-        self.contacts_cache  = []
-        for element in self.app.wd.find_elements_by_xpath("//tr[@name='entry']"):
-                cells = element.find_elements_by_tag_name("td")
-                value = cells[0].find_element_by_tag_name("input").get_attribute("value")
-                firstname = cells[1].text
-                lastname = cells[2].text
-                address = cells[3].text
-                allphones = cells[5].text
-                self.contacts_cache.append(Contacts(id = value, address = address, firstname = firstname, lastname = lastname,
-                                                     all_phones_from_home_page = allphones))
-        return list(self.contacts_cache)
-
-
-    # Получение данных контакта из диалога редактирования (склейка)
-    def get_contact_info_from_edit_page_(self, index):
-       self.select_contact_by_index(index)
-       self.app.wd.find_element_by_xpath("//img[@title ='Edit']").click()
-
-       firstname = self.app.wd.find_element_by_xpath("//input[@name='firstname']").get_attribute("value")
-       lastname = self.app.wd.find_element_by_xpath("//input[@name='lastname']").get_attribute("value")
-       id = self.app.wd.find_element_by_xpath("//input[@name='id']").get_attribute("value")
-       home = self.app.wd.find_element_by_xpath("//input[@name='home']").get_attribute("value")
-       work = self.app.wd.find_element_by_xpath("//input[@name='work']").get_attribute("value")
-       phone2 = self.app.wd.find_element_by_xpath("//input[@name='phone2']").get_attribute("value")
-       mobile = self.app.wd.find_element_by_xpath("//input[@name='mobile']").get_attribute("value")
-
-       return Contacts(id = id, firstname = firstname, lastname = lastname, home = home,
-                       mobile = mobile, work = work, phone2 = phone2)
-
+    # Вспомогательный метод для обратной проверки телефонов
     def merge_phones_like_on_home_page(self, contact):
 
-        res = "\n".join(
-                map(
-                    lambda x: common.clear(x, "[() -]"),[contact.home, contact.mobile, contact.work, contact.phone2]))
+       res = "\n".join(
+               map(
+                   lambda x: common.clear(x, "[() -]"),[contact.home, contact.mobile, contact.work, contact.phone2]))
+       return filter(
+               lambda x: x !="", filter(
+                       lambda x: x is not None, res))
+
+    # Вспомогательный метод для обратной проверки email
+    def merge_emails_like_on_home_page(self, contact):
+
+        res = "\n".join([contact.email, contact.email2, contact.email3])
         return filter(
                 lambda x: x !="", filter(
                         lambda x: x is not None, res))
+
+    # Принудительная очистка кеша
+    def clear_cache(self):
+        self.contacts_cache = None

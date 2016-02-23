@@ -26,6 +26,7 @@ def test_TestEditContact(app):
         # Контактов нет - создадим
         app.contacts.addContact(contact)
         app.session.to_homepage()
+
     # Запoминаем список контактов
     old_contacts= app.contacts.get_contacts_list()
     new_contact.id = old_contacts[0].id

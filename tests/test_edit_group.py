@@ -3,7 +3,7 @@
 # Проверки групп контактов - редактирование
 from random import randrange
 
-from model import LoginPage, Groups
+from model import Groups
 
 # Тест - редактирование группы контактов по имени
 def test_edit_group_by_name(app):
@@ -60,7 +60,7 @@ def test_edit_random_contacts_group(app):
         app.group.add_new_contacts_group(Groups(name="New_01"))
     # Запoминаем список групп
     old_groups = app.group.get_groups_list()
-    # случайнор выбираем группу
+    # случайно выбираем группу
     index = randrange(len(old_groups))
     group.id = old_groups[index].id
     # редактирование группы контактов
