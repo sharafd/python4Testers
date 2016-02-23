@@ -20,7 +20,7 @@ contact = Contacts(address='phones_test', middlename=common.random_ascii_string(
 def test_phones_on_homepage_split(app):
 
     app.session.to_homepage()
-    #Принудительная очистка кеша
+    #Принудительная очистка кеша во избежание сравнения с несуществующими в кеше полями
     app.contacts.clear_cache()
     # Ищем контакт с правильно заполненными телефонами
     index = app.contacts.get_contact_index_by_address("phones_test")
@@ -36,12 +36,12 @@ def test_phones_on_homepage_split(app):
     assert(contacts_from_phone_app.home == common.clear(contacts_from_edit_page.home,"[() -]"))
     assert(contacts_from_phone_app.mobile == common.clear(contacts_from_edit_page.mobile,"[() -]"))
     assert(contacts_from_phone_app.work == common.clear(contacts_from_edit_page.work,"[() -]"))
-  #  assert(contacts_from_phone_app.phone2 == common.clear(contacts_from_edit_page.phone2,"[() -]"))
+    assert(contacts_from_phone_app.phone2 == common.clear(contacts_from_edit_page.phone2,"[() -]"))
 
 # Телефоны на странице просмотра - прямая проверка
 def test_phones_on_viewpage_split(app):
     app.session.to_homepage()
-    #Принудительная очистка кеша
+    #Принудительная очистка кеша во избежание сравнения с несуществующими в кеше полями
     app.contacts.clear_cache()
     # Ищем контакт с правильно заполненными телефонами
     index = app.contacts.get_contact_index_by_address("phones_test")
@@ -71,7 +71,7 @@ def test_phones_on_homepage_merge(app):
         app.contacts.addContact(contact)
         app.session.to_homepage()
 
-    # Принудительная очистка кеша
+    #Принудительная очистка кеша во избежание сравнения с несуществующими в кеше полями
     app.contacts.clear_cache()
 
     # Cлучайным образом выбираем контакт

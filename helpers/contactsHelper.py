@@ -140,11 +140,11 @@ class ContactsHelper:
     # Добавление контакта в адресную книгу
     def addContact(self, contacts):
         self.app.wd.find_element_by_link_text("add new").click()
-        if contacts.address is not None:
-            self.app.wd.find_element_by_name("address").click()
-            self.app.wd.find_element_by_name("address").clear()
-            self.app.wd.find_element_by_name("address").send_keys(contacts.address)
-        self.app.wd.find_element_by_xpath("//input[@type='submit' and @name='quickadd' and @value='Next']").click()
+     #   if contacts.address is not None:
+     #       self.app.wd.find_element_by_name("address").click()
+     #       self.app.wd.find_element_by_name("address").clear()
+     #       self.app.wd.find_element_by_name("address").send_keys(contacts.address)
+     #   self.app.wd.find_element_by_xpath("//input[@type='submit' and @name='quickadd' and @value='Next']").click()
         self.fill_contact_params(contacts)
         self.app.wd.find_element_by_xpath("//input[@type='submit' and @name='submit' and @value='Enter']").click()
         self.contacts_cache = None
@@ -218,9 +218,37 @@ class ContactsHelper:
                 address = cells[3].text
                 allmails = cells[4].text.splitlines()
                 allphones = cells[5].text.splitlines()
+                try:
+                  home = allphones[0]
+                except IndexError:
+                    home = ""
+                try:
+                  mobile = allphones[1]
+                except IndexError:
+                    mobile = ""
+                try:
+                  work = allphones[2]
+                except IndexError:
+                    work = ""
+                try:
+                  phone2 = allphones[3]
+                except IndexError:
+                    phone2  = ""
+                try:
+                  email = allmails[0]
+                except IndexError:
+                    email = ""
+                try:
+                  email2 = allmails[1]
+                except IndexError:
+                    email2 = ""
+                try:
+                  email3 = allmails[2]
+                except IndexError:
+                    email3 = ""
                 self.contacts_cache.append(Contacts(id = value, firstname = firstname, lastname = lastname, address = address,
-                                                     home = allphones[0], mobile = allphones[1], work = allphones[2],
-                                                     email = allmails[0], email2 = allmails[1]))
+                                                     home = home, mobile = mobile, work = work, phone2 = phone2,
+                                                     email = email, email2 = email2, email3 = email3))
         return list(self.contacts_cache)
 
     #Список контактов (склейка)
@@ -247,9 +275,12 @@ class ContactsHelper:
     def get_contact_info_from_edit_page(self, index):
        self.select_contact_for_edit_by_index(index)
 
+       id = self.app.wd.find_element_by_xpath("//input[@name='id']").get_attribute("value")
        firstname = self.app.wd.find_element_by_xpath("//input[@name='firstname']").get_attribute("value")
        lastname = self.app.wd.find_element_by_xpath("//input[@name='lastname']").get_attribute("value")
-       id = self.app.wd.find_element_by_xpath("//input[@name='id']").get_attribute("value")
+       middlename = self.app.wd.find_element_by_xpath("//input[@name='middlename']").get_attribute("value")
+     # address = self.app.wd.find_element_by_xpath("//input[@name='address']").get_attribute("value")
+       address = self.app.wd.find_element_by_xpath("//textarea[@name='address']").get_attribute("value")
        home = self.app.wd.find_element_by_xpath("//input[@name='home']").get_attribute("value")
        work = self.app.wd.find_element_by_xpath("//input[@name='work']").get_attribute("value")
        phone2 = self.app.wd.find_element_by_xpath("//input[@name='phone2']").get_attribute("value")
@@ -258,7 +289,7 @@ class ContactsHelper:
        email2 = self.app.wd.find_element_by_xpath("//input[@name='email2']").get_attribute("value")
        email3 = self.app.wd.find_element_by_xpath("//input[@name='email3']").get_attribute("value")
 
-       return Contacts(id = id, firstname = firstname, lastname = lastname, home = home,
+       return Contacts(id = id, firstname = firstname, lastname = lastname, middlename = middlename, home = home,address = address,
                        mobile = mobile, work = work, phone2 = phone2, email = email, email2 = email2, email3 = email3)
 
     # Получение данных контакта из диалога редактирования (нарезка)
