@@ -28,7 +28,7 @@ class SessionHelper:
 
     # Открытие тестового приложения
     def open_login_page(self):
-        self.app.wd.get("http://192.168.1.25/addressbook/index.php")
+        self.app.wd.get(self.app.baseurl)
 
     # Логин
     def login(self, loginpage):
