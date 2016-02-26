@@ -10,7 +10,6 @@ common = commonFunctions.Common()
 
 # Добавление нового контакта без привязки к группе
 def test_TestAddContact(app):
-    root_dir = os.path.abspath(os.path.dirname(__file__))
     app.session.to_homepage()
     # Запoминаем список контактов
     old_contacts = app.contacts.get_contacts_list()
@@ -19,7 +18,7 @@ def test_TestAddContact(app):
                                      nickname=common.random_ascii_string(10), byear="1988", ayear="2000",email = "mymail@hosting.com",
                              title="Contact", company="MyCompany", home="S79", mobile="+7", work="SOHO", fax="545454554",
                              email2="employee@company.org", email3="boss@foo.org", homepage="www.my.org", address2="Samara",
-                             photo= root_dir + "/resources/avatar.png", phone2="+999", notes="++++++++++", bday="4", aday="14",
+                             photo= os.path.join(os.path.abspath(os.path.dirname(__file__)), "resources/avatar.png"), phone2="+999", notes="++++++++++", bday="4", aday="14",
                              amonth= "July", bmonth= "May", group=None))
     app.session.to_homepage()
     # Сравниваем размер списков

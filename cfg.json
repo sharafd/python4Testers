@@ -1,0 +1,5 @@
+{
+  "baseurl":"http://192.168.1.25/addressbook",
+  "username":"admin",
+  "password":"secret"
+}
