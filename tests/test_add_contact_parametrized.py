@@ -24,7 +24,6 @@ testdata = [Contacts(address=common.random_string(10), middlename=common.random_
  # Тест - создание группы контактов
 @pytest.mark.parametrize("contact", testdata, ids=[repr(x) for x in testdata])
 def test_TestAddContact_parametrized(app, contact):
-    root_dir = os.path.abspath(os.path.dirname(__file__))
     app.session.to_homepage()
     # Запoминаем список контактов
     old_contacts = app.contacts.get_contacts_list()
@@ -38,3 +37,16 @@ def test_TestAddContact_parametrized(app, contact):
     # Сравниваем списки по содержимому
     assert old_contacts.sort() == new_contacts.sort()
 
+ # Тест - создание группы контактов из JSON
+def test_TestAddContact_parametrized(app, json_contacts):
+    app.session.to_homepage()
+    # Запoминаем список контактов
+    old_contacts = app.contacts.get_contacts_list()
+    app.contacts.addContact(json_contacts)
+    app.session.to_homepage()
+    # Сравниваем размер списков
+    assert len(old_contacts) + 1 == app.contacts.count()
+    #  Получаем новый список контактов
+    new_contacts = app.contacts.get_contacts_list()
+    # Сравниваем списки по содержимому
+    assert old_contacts.sort() == new_contacts.sort()

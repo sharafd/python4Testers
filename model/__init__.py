@@ -1,4 +1,4 @@
 
-from model.groups import *
+from model.group import *
 from model.loginpage import *
-from model.contacts import *
+from model.contact import *

@@ -1,8 +1,8 @@
 # -*- coding: utf-8 -*-
-import importlib
-import json
 
-import os
+import importlib
+import jsonpickle
+import os, json
 import pytest
 from fixtures import Application
 from model import LoginPage
@@ -44,11 +44,18 @@ def pytest_addoption(parser):
     parser.addoption("--browser", action = "store", default = "firefox")
     parser.addoption("--cfg", action = "store", default = os.path.join(os.path.abspath(os.path.dirname(__file__)), "cfg.json"))
 
+def load_from_module(module):
+    return importlib.import_module("data.%s" % module).testdata
+
+def load_from_json(file):
+    with open(os.path.join(os.path.abspath(os.path.dirname(__file__)), "data/%s.json" % file)) as f:
+        return jsonpickle.decode(f.read())
+
 def pytest_generate_tests(metafunc):
     for fixture in metafunc.fixturenames:
         if fixture.startswith("data_"):
             testdata = load_from_module(fixture[5:])
             metafunc.parametrize(fixture, testdata, ids=[str(x) for x in testdata])
-
-def load_from_module(module):
-    return importlib.import_module("data.%s" % module).testdata
+        elif fixture.startswith("json_"):
+            testdata = load_from_json(fixture[5:])
+            metafunc.parametrize(fixture, testdata, ids=[str(x) for x in testdata])

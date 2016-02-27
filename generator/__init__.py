@@ -1,3 +1,3 @@
 
-from generator.group import *
-from generator.contact import *
+from generator.groups import *
+from generator.contacts import *
