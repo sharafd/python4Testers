@@ -1,12 +1,9 @@
 # -*- coding: utf-8 -*-
 
-from random import randrange
-
-import time
-
 import os
 from func import commonFunctions
 from model import Contacts
+from random import randrange
 
 common = commonFunctions.Common()
 
@@ -15,8 +12,8 @@ contact = Contacts(address='phones_test', middlename=common.random_ascii_string(
                              nickname=common.random_ascii_string(10), byear="1988", ayear="2000", email = "mymail@hosting.com",
                              title="Contact", company="MyCompany", home="779", mobile="+75-1", work="+951-705-96-11", fax="545454554",
                              email2="employee@company.org", email3="boss@foo.org", homepage="www.my.org", address2="Samara",
-                             photo= os.path.join(os.path.abspath(os.path.dirname(__file__)), "resources/avatar.png"), phone2="+999(55)6",
-                             notes="++++++++++", bday="4", aday="14", amonth= "July", bmonth= "May", group=None)
+                             photo= os.path.join(os.path.abspath(os.path.dirname(__file__)), "../resources/avatar.png"),
+                             phone2="+999(55)6", notes="++++++++++", bday="4", aday="14", amonth= "July", bmonth= "May", group=None)
 
 # Инфо о контакте на главной странице - прямая проверка
 def test_compare_contact_info_split(app):

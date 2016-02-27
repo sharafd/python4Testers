@@ -12,11 +12,12 @@ common = commonFunctions.Common()
 
 # Параметры  контактов
 testdata = [Contacts(address=common.random_string(10), middlename=common.random_ascii_string(10), lastname=common.random_ascii_string(10), firstname = "FOO",
-                                     nickname=common.random_ascii_string(10), byear="1988", ayear="2000",email = "mymail@hosting.com",
-                             title=common.random_string(10), company=common.random_string(10), home=common.random_digits(5), mobile="+7", work=common.random_digits(5), fax=common.random_digits(11),
+                             nickname=common.random_ascii_string(10), byear="1988", ayear="2000",email = "mymail@hosting.com",
+                             title=common.random_string(10), company=common.random_string(10), home=common.random_digits(5), mobile="+7",
+                             work=common.random_digits(5), fax=common.random_digits(11),
                              email2="employee@company.org", email3="boss@foo.org", homepage="www.my.org", address2="Samara",
-                             photo= os.path.join(os.path.abspath(os.path.dirname(__file__)), "resources/avatar.png"), phone2=common.random_digits(5), notes="++++++++++", bday="4", aday="14",
-                             amonth= "July", bmonth= "May", group=None)
+                             photo= os.path.join(os.path.abspath(os.path.dirname(__file__)), "../resources/avatar.png"),
+                             phone2=common.random_digits(5), notes="++++++++++", bday="4", aday="14", amonth= "July", bmonth= "May", group=None)
     for i in range(4)
 ]
 

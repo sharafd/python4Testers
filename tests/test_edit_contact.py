@@ -11,12 +11,12 @@ common = commonFunctions.Common()
 contact = Contacts(Contacts(address=common.random_string(15), middlename="foo", lastname="Bar", nickname="boo", byear="1988", ayear="2000",
                              title="Contact", company="", home="11", mobile="444", work="5656", fax="545454554",
                              email2="", email3="", homepage="", address2="Samara",
-                             photo= os.path.join(os.path.abspath(os.path.dirname(__file__)), "resources/avatar.png"),
+                             photo= os.path.join(os.path.abspath(os.path.dirname(__file__)), "../resources/avatar.png"),
                              phone2="+999", notes="++++++++++", bday="4", aday="14", amonth= "July", bmonth= "May", group=""))
 new_contact = Contacts(Contacts(address="Qwerty00", middlename="foo", lastname="Bar", nickname="boo", byear="1988", ayear="2000",
                              title="Contact", company="", home="56565", mobile="566(8)", work="4564", fax="545454554",
                              email2="", email3="", homepage="", address2="Samara",email = "mymail@hosting.com",
-                             photo= os.path.join(os.path.abspath(os.path.dirname(__file__)), "resources/avatar.png"),
+                             photo= os.path.join(os.path.abspath(os.path.dirname(__file__)), "../resources/avatar.png"),
                              phone2="+9(5)-78-99", notes="++++++++++", bday="4", aday="14",
                              amonth= "July", bmonth= "May", group=""))
 
