@@ -30,7 +30,7 @@ class Common:
     # count - количество символов в строке
     def random_punctuation(self, count = None):
         if count is None:
-           count = int(random.choice(string.digits))
+           count = random.randrange(max_char_count)
         return "".join([random.choice(string.punctuation) for i in range(count)])
 
     # Случайная строка (буквы и цифры)

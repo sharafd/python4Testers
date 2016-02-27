@@ -8,7 +8,6 @@ from model import Contacts
 from func import commonFunctions
 common = commonFunctions.Common()
 
-root_dir = os.path.abspath(os.path.dirname(__file__))
 contact = Contacts(address='phones_test', middlename=common.random_ascii_string(10), lastname=common.random_ascii_string(10),
                              nickname=common.random_ascii_string(10), byear="1988", ayear="2000", email = "mymail@hosting.com",
                              title="Contact", company="MyCompany", home="779", mobile="+75-1", work="+951-705-96-11", fax="545454554",
