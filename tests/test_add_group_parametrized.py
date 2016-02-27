@@ -2,6 +2,7 @@
 # Проверки групп контактов - добавление из параметра
 
 import pytest
+
 from data import *
 from model import Groups
 from func import commonFunctions
@@ -61,4 +62,19 @@ def test_add_group_from_constant(app, group):
     # Сравниваем списки по содержимому
     group.name  = "Select ("+ group.name +")"
     old_groups.append(group)
+    assert sorted(old_groups, key=Groups.id_or_max) == sorted(new_groups, key=Groups.id_or_max)
+
+ # Тест - создание группы контактов из фикстуры
+def test_add_group_from_fixture(app, data_groups):
+    # Запоминаем список групп
+    old_groups = app.group.get_groups_list()
+    # Создаём группу контактов
+    app.group.add_new_contacts_group(data_groups)
+    # Сравниваем размер списков
+    assert len(old_groups) + 1 == app.group.count()
+    #  Получаем новый список групп
+    new_groups = app.group.get_groups_list()
+    # Сравниваем списки по содержимому
+    data_groups.name  = "Select (" + data_groups.name + ")"
+    old_groups.append(data_groups)
     assert sorted(old_groups, key=Groups.id_or_max) == sorted(new_groups, key=Groups.id_or_max)
