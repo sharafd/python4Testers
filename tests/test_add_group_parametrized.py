@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
-
 # Проверки групп контактов - добавление из параметра
+
 import pytest
 from data import *
 from model import Groups
