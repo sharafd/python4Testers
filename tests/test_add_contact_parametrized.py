@@ -5,6 +5,7 @@
 import os
 
 import pytest
+from generator.contacts import generate_json
 from model import *
 from func import commonFunctions
 
@@ -38,7 +39,12 @@ def test_TestAddContact_parametrized(app, contact):
     assert old_contacts.sort() == new_contacts.sort()
 
  # Тест - создание группы контактов из JSON
-def test_TestAddContact_parametrized(app, json_contacts):
+def test_TestAddContact_parametrized_from_json(app, json_contacts):
+    # Формируем тестовые данные
+    jsonfile = "../data/groups.json"
+    if not os.path.isfile(os.path.join(os.path.abspath(os.path.dirname(__file__)), jsonfile)):
+        generate_json(1, jsonfile)
+
     app.session.to_homepage()
     # Запoминаем список контактов
     old_contacts = app.contacts.get_contacts_list()
