@@ -1,22 +1,24 @@
 # -*- coding: utf-8 -*-
 # Проверки групп контактов - добавление из параметра
+import os
 import pytest
 
 from data import *
 from model import Groups
 from func import commonFunctions
+from generator.groups import generate_json
 
 common = commonFunctions.Common()
 
 # Параметры групп контактов
-testdata = [Groups(name="", header=None, footer=None)]+[
+data = [Groups(name="", header=None, footer=None)]+[
     Groups(name=common.random_string(15), header=common.random_string(),
                    footer=common.random_string(15))
     for i in range(4)
 ]
 
  # Тест - создание группы контактов
-@pytest.mark.parametrize("group", testdata, ids=[repr(x) for x in testdata])
+@pytest.mark.parametrize("group", data, ids=[repr(x) for x in data])
 def test_add_group_parametrize(app, group):
     # Запоминаем список групп
     old_groups = app.group.get_groups_list()
@@ -80,6 +82,10 @@ def test_add_group_from_fixture(app, data_groups):
 
  # Тест - создание группы контактов из JSON
 def test_add_group_from_json(app, json_groups):
+    # Формируем тестовые данные
+    jsonfile = "../data/groups.json"
+    if not os.path.isfile(os.path.join(os.path.abspath(os.path.dirname(__file__)), jsonfile)):
+        generate_json(1, jsonfile)
     # Запоминаем список групп
     old_groups = app.group.get_groups_list()
     # Создаём группу контактов
