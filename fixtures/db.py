@@ -1,18 +1,18 @@
 # -*- coding: utf-8 -*-
 
 # Работа с БД
-
-import mysql
+import mysql.connector
+from helpers.dbHelper import DbHelper
 
 class DbFixture:
 
-  def __init__(self, host, name, user, password):
+  def __init__(self, host, database, user, password):
     self.host = host
-    self.name = name
+    self.database = database
     self.user = user
     self.password =password
-    self.connection = mysql.connector.connect(host = host, database=name,
+    self.connection = mysql.connector.connect(host = host, database=database,
                                               user = user, password = password)
-
-    def destroy(self):
-        self.connection.close()
+    self.database = DbHelper(self)
+  def destroy(self):
+    self.connection.close()

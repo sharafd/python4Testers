@@ -39,3 +39,4 @@ class Common:
        if count is None:
            count = random.randrange(max_char_count)
        return "".join([random.choice(string.ascii_letters + string.digits + string.punctuation) for i in range(count)])
+

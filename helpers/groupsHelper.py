@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Класс для работы с группами контактов
-from model import Groups
+from model import Group
 
 class GroupsHelper:
 
@@ -105,10 +105,17 @@ class GroupsHelper:
           for element in self.app.wd.find_elements_by_name("selected[]"):
               text = element.get_attribute("title")
               id = element.get_attribute("value")
-              self.group_cache.append(Groups(id = id, name = text))
+              self.group_cache.append(Group(id = id, name = text))
         return list(self.group_cache)
 
     # Подсчёт кoличества групп
     def count(self):
         self.open_groups_page()
         return len(self.app.wd.find_elements_by_name("selected[]"))
+
+
+    def format_groups_as_from_ui(self, group):
+        group.name = "Select (" + group.name + ")"
+        return Group(id = group.id, name = group.name,
+                     header = group.header.strip(), footer = group.footer.strip())
+

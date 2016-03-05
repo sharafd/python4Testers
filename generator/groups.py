@@ -5,7 +5,7 @@ import json, os, sys, getopt
 
 import jsonpickle
 from func import commonFunctions
-from model import Groups
+from model import Group
 
 n = 2
 f = "../data/groups.json"
@@ -30,10 +30,10 @@ def main():
 
 # тестовые данные
 def generate_json(n,f):
-    testdata = [Groups(name=common.random_ascii_string(), header=common.random_digits(),
-                       footer=common.random_string())
-        for i in range(n)
-    ]
+    testdata = [Group(name=common.random_ascii_string(), header=common.random_digits(),
+                      footer=common.random_string())
+                for i in range(n)
+                ]
 
     filename = os.path.join(os.path.abspath(os.path.dirname(__file__)), f)
     # форматируем JSON

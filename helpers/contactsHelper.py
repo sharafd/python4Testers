@@ -3,7 +3,7 @@
 # Класс для работы с контактами
 import re
 
-from model import Contacts
+from model import Contact
 from func import commonFunctions
 
 common = commonFunctions.Common()
@@ -250,9 +250,9 @@ class ContactsHelper:
                   email3 = allmails[2]
                 except IndexError:
                     email3 = ""
-                self.contacts_cache.append(Contacts(id = value, firstname = firstname, lastname = lastname, address = address,
-                                                     home = home, mobile = mobile, work = work, phone2 = phone2,
-                                                     email = email, email2 = email2, email3 = email3))
+                self.contacts_cache.append(Contact(id = value, firstname = firstname, lastname = lastname, address = address,
+                                                   home = home, mobile = mobile, work = work, phone2 = phone2,
+                                                   email = email, email2 = email2, email3 = email3))
         return list(self.contacts_cache)
 
     #Список контактов (склейка)
@@ -267,8 +267,8 @@ class ContactsHelper:
                 address = cells[3].text
                 allmails = cells[4].text
                 allphones = cells[5].text
-                self.contacts_cache.append(Contacts(id = value, address = address, firstname = firstname, lastname = lastname,
-                                                    all_phones_from_home_page = allphones, all_emails_from_home_page = allmails))
+                self.contacts_cache.append(Contact(id = value, address = address, firstname = firstname, lastname = lastname,
+                                                   all_phones_from_home_page = allphones, all_emails_from_home_page = allmails))
         return list(self.contacts_cache)
 
     # Подсчёт кoличества контактов
@@ -293,8 +293,8 @@ class ContactsHelper:
        email2 = self.app.wd.find_element_by_xpath("//input[@name='email2']").get_attribute("value")
        email3 = self.app.wd.find_element_by_xpath("//input[@name='email3']").get_attribute("value")
 
-       return Contacts(id = id, firstname = firstname, lastname = lastname, middlename = middlename, home = home,address = address,
-                       mobile = mobile, work = work, phone2 = phone2, email = email, email2 = email2, email3 = email3)
+       return Contact(id = id, firstname = firstname, lastname = lastname, middlename = middlename, home = home, address = address,
+                      mobile = mobile, work = work, phone2 = phone2, email = email, email2 = email2, email3 = email3)
 
     # Получение данных контакта из диалога редактирования (нарезка)
     def get_contact_info_from_view_page(self, index):
@@ -306,7 +306,7 @@ class ContactsHelper:
        mobile = re.search("M: (.*)", text).group(1)
        phone2 = re.search("P: (.*)", text).group(1)
 
-       return Contacts(home = home, mobile = mobile, work = work, phone2 = phone2)
+       return Contact(home = home, mobile = mobile, work = work, phone2 = phone2)
 
     # Поиск контакта по адресу
     def get_contact_index_by_address(self, address):

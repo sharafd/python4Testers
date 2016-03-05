@@ -3,7 +3,7 @@
 # Контакты
 from sys import maxsize
 
-class Contacts:
+class Contact:
     
     def __init__(self, id = None, address=None, firstname = None, middlename=None, lastname=None, nickname=None, byear=None, ayear=None, photo=None, title=None, company=None,
                  home=None, mobile=None, work=None, fax=None, email2=None, email3=None, homepage=None, address2=None, phone2=None, notes=None, bday=None, bmonth=None,

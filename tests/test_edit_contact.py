@@ -5,20 +5,20 @@ from random import randrange
 
 import os
 from func import commonFunctions
-from model import Contacts
+from model import Contact
 
 common = commonFunctions.Common()
-contact = Contacts(Contacts(address=common.random_string(15), middlename="foo", lastname="Bar", nickname="boo", byear="1988", ayear="2000",
-                             title="Contact", company="", home="11", mobile="444", work="5656", fax="545454554",
-                             email2="", email3="", homepage="", address2="Samara",
-                             photo= os.path.join(os.path.abspath(os.path.dirname(__file__)), "../resources/avatar.png"),
-                             phone2="+999", notes="++++++++++", bday="4", aday="14", amonth= "July", bmonth= "May", group=""))
-new_contact = Contacts(Contacts(address="Qwerty00", middlename="foo", lastname="Bar", nickname="boo", byear="1988", ayear="2000",
-                             title="Contact", company="", home="56565", mobile="566(8)", work="4564", fax="545454554",
-                             email2="", email3="", homepage="", address2="Samara",email = "mymail@hosting.com",
-                             photo= os.path.join(os.path.abspath(os.path.dirname(__file__)), "../resources/avatar.png"),
-                             phone2="+9(5)-78-99", notes="++++++++++", bday="4", aday="14",
-                             amonth= "July", bmonth= "May", group=""))
+contact = Contact(Contact(address=common.random_string(15), middlename="foo", lastname="Bar", nickname="boo", byear="1988", ayear="2000",
+                          title="Contact", company="", home="11", mobile="444", work="5656", fax="545454554",
+                          email2="", email3="", homepage="", address2="Samara",
+                          photo= os.path.join(os.path.abspath(os.path.dirname(__file__)), "../resources/avatar.png"),
+                          phone2="+999", notes="++++++++++", bday="4", aday="14", amonth= "July", bmonth= "May", group=""))
+new_contact = Contact(Contact(address="Qwerty00", middlename="foo", lastname="Bar", nickname="boo", byear="1988", ayear="2000",
+                              title="Contact", company="", home="56565", mobile="566(8)", work="4564", fax="545454554",
+                              email2="", email3="", homepage="", address2="Samara", email = "mymail@hosting.com",
+                              photo= os.path.join(os.path.abspath(os.path.dirname(__file__)), "../resources/avatar.png"),
+                              phone2="+9(5)-78-99", notes="++++++++++", bday="4", aday="14",
+                              amonth= "July", bmonth= "May", group=""))
 
 # Редактирование контакта
 def test_TestEditContact(app):
@@ -39,7 +39,7 @@ def test_TestEditContact(app):
     #  Получаем новый список контактов
     new_contacts = app.contacts.get_contacts_list()
     old_contacts[0] = new_contact
-    assert sorted(old_contacts, key=Contacts.id_or_max) == sorted(new_contacts, key=Contacts.id_or_max)
+    assert sorted(old_contacts, key=Contact.id_or_max) == sorted(new_contacts, key=Contact.id_or_max)
 
 # Удаление фото контакта
 def test_TestDelContactPhoto(app):
@@ -58,7 +58,7 @@ def test_TestDelContactPhoto(app):
     #  Получаем новый список контактов
     new_contacts = app.contacts.get_contacts_list()
     old_contacts[0] = new_contact
-    assert sorted(old_contacts, key=Contacts.id_or_max) == sorted(new_contacts, key=Contacts.id_or_max)
+    assert sorted(old_contacts, key=Contact.id_or_max) == sorted(new_contacts, key=Contact.id_or_max)
 
 # Редактирование первого контакта со страницы просмотра
 def test_TestModifyContact(app):
@@ -78,7 +78,7 @@ def test_TestModifyContact(app):
     new_contacts = app.contacts.get_contacts_list()
     # Сравниваем списки по содержимому
     old_contacts[0] = new_contact
-    assert sorted(old_contacts, key=Contacts.id_or_max) == sorted(new_contacts, key=Contacts.id_or_max)
+    assert sorted(old_contacts, key=Contact.id_or_max) == sorted(new_contacts, key=Contact.id_or_max)
 
 # Редактирование случайно выброанного контакта
 def test_TestEditRandomContact(app):
@@ -100,4 +100,4 @@ def test_TestEditRandomContact(app):
     #  Получаем новый список контактов
     new_contacts = app.contacts.get_contacts_list()
     old_contacts[index] = new_contact
-    assert sorted(old_contacts, key=Contacts.id_or_max) == sorted(new_contacts, key=Contacts.id_or_max)
+    assert sorted(old_contacts, key=Contact.id_or_max) == sorted(new_contacts, key=Contact.id_or_max)

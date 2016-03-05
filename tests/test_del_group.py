@@ -2,11 +2,11 @@
 
 # Проверки групп контактов - удаление
 from random import randrange
-from model import Groups
+from model import Group
 
 # Создаём группу контактов
 def create_group(app):
-    group = Groups(name="New_01")
+    group = Group(name="New_01")
     app.group.add_new_contacts_group(group)
 
 # Тест - удаление первой группы контактов
@@ -28,7 +28,7 @@ def test_delete_first_group(app):
 
 # Тест - удаление группы контактов по имени
 def test_delete_group_by_name(app):
-   group = Groups(name="New_01")
+   group = Group(name="New_01")
    if not app.group.is_group_exist(group.name):
       app.group.add_new_contacts_group(group)
    old_groups = app.group.get_groups_list()

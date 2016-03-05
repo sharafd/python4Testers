@@ -4,9 +4,11 @@ import importlib
 import jsonpickle
 import os, json
 import pytest
+
 from fixtures import Application
+from fixtures import DbFixture
+
 from model import LoginPage
-from fixtures.db import DbFixture
 
 fixture = None
 configuration = None
@@ -22,6 +24,7 @@ def load_config(file):
 
   return configuration
 
+# Фикстура для WebDriver
 @pytest.fixture
 def app(request):
     global login
@@ -47,6 +50,7 @@ def stop(request):
     request.addfinalizer(fin)
     return fixture
 
+# Фикстура для mysql
 @pytest.fixture(scope="session")
 def db(request):
     # Чтение кoнфигурационного файла
@@ -70,6 +74,7 @@ def load_from_json(file):
     with open(os.path.join(os.path.abspath(os.path.dirname(__file__)), "data/%s.json" % file)) as f:
         return jsonpickle.decode(f.read())
 
+# Загрузка тестовых данных из файла
 def pytest_generate_tests(metafunc):
     for fixture in metafunc.fixturenames:
         if fixture.startswith("data_"):

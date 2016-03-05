@@ -3,13 +3,13 @@
 # Проверки групп контактов - редактирование
 from random import randrange
 
-from model import Groups
+from model import Group
 
 # Тест - редактирование группы контактов по имени
 def test_edit_group_by_name(app):
     # Параметры групп контактов
-    group = Groups(name="New_06661", header="664464664", footer= None)
-    editgroup = Groups(name="New_01")
+    group = Group(name="New_06661", header="664464664", footer= None)
+    editgroup = Group(name="New_01")
     if not app.group.is_group_exist(editgroup.name):
         # группы нет - надо создать
         app.group.add_new_contacts_group(editgroup)
@@ -33,10 +33,10 @@ def test_edit_group_by_name(app):
 # Тест - редактирование группы контактов  - только наименование
 def test_edit_first_contacts_group(app):
     # Параметры группы контактов
-    group = Groups(name="New_045456661")
+    group = Group(name="New_045456661")
     if app.group.is_group_exist():
         # групп нет - надо создать
-        app.group.add_new_contacts_group(Groups(name="New_01"))
+        app.group.add_new_contacts_group(Group(name="New_01"))
     # Запoминаем список групп
     old_groups = app.group.get_groups_list()
     group.id = old_groups[0].id
@@ -49,15 +49,15 @@ def test_edit_first_contacts_group(app):
     # Сравниваем списки по содержимому
     old_groups[0]= group
     old_groups[0].name = "Select " + "(%s)" % group.name
-    assert sorted(old_groups, key=Groups.id_or_max) == sorted(new_groups, key=Groups.id_or_max)
+    assert sorted(old_groups, key=Group.id_or_max) == sorted(new_groups, key=Group.id_or_max)
 
 # Тест - редактирование группы контактов
 def test_edit_random_contacts_group(app):
     # Параметры группы контактов
-    group = Groups(name="New_045456661")
+    group = Group(name="New_045456661")
     if app.group.count == 0:
         # групп нет - надо создать
-        app.group.add_new_contacts_group(Groups(name="New_01"))
+        app.group.add_new_contacts_group(Group(name="New_01"))
     # Запoминаем список групп
     old_groups = app.group.get_groups_list()
     # случайно выбираем группу
@@ -72,4 +72,4 @@ def test_edit_random_contacts_group(app):
     # Сравниваем списки по содержимому
     old_groups[index]= group
     old_groups[index].name = "Select " + "(%s)" % group.name
-    assert sorted(old_groups, key=Groups.id_or_max) == sorted(new_groups, key=Groups.id_or_max)
+    assert sorted(old_groups, key=Group.id_or_max) == sorted(new_groups, key=Group.id_or_max)
