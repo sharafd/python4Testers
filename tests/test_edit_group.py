@@ -6,7 +6,7 @@ from random import randrange
 from model import Group
 
 # Тест - редактирование группы контактов по имени
-def test_edit_group_by_name(app, db):
+def test_edit_group_by_name(app, db, checkUI):
     # Параметры групп контактов
     group = Group(name="New_06661", header="664464664", footer= None)
     editgroup = Group(name="New_01")
@@ -18,7 +18,8 @@ def test_edit_group_by_name(app, db):
     # редактирование группы контактов по имени
     editgroup.id = app.group.edit_contacts_group_by_name(name = "New_01", groups = group)
     # Сравниваем размер списков
-    assert len(old_groups) == app.group.count()
+    if (checkUI):
+        assert len(old_groups) == app.group.count()
     #  Получаем норвый список групп
     new_groups = db.database.get_groups_list()
     old_groups.remove(editgroup) # Удаляем отредактирорванную группу
@@ -29,7 +30,7 @@ def test_edit_group_by_name(app, db):
     assert old_groups.sort() == new_groups.sort()
 
 # Тест - редактирование группы контактов  - только наименование
-def test_edit_first_contacts_group(app, db):
+def test_edit_first_contacts_group(app, db, checkUI):
     # Параметры группы контактов
     group = Group(name="New_045456661")
     if app.group.is_group_exist():
@@ -41,7 +42,8 @@ def test_edit_first_contacts_group(app, db):
     # редактирование группы контактов
     app.group.edit_first_contacts_group(groups = group)
     # Сравниваем размер списков
-    assert len(old_groups) == app.group.count()
+    if (checkUI):
+        assert len(old_groups) == app.group.count()
     #  Получаем норвый список групп
     new_groups = db.database.get_groups_list()
     # Сравниваем списки по содержимому
@@ -49,9 +51,11 @@ def test_edit_first_contacts_group(app, db):
   #  old_groups[0].name = "Select " + "(%s)" % group.name
   #  assert sorted(old_groups, key=Group.id_or_max) == sorted(new_groups, key=Group.id_or_max)
     assert old_groups.sort() == new_groups.sort()
+    if (checkUI):
+      assert app.group.get_groups_list().sort() == new_groups.sort()
 
 # Тест - редактирование группы контактов
-def test_edit_random_contacts_group(app, db):
+def test_edit_random_contacts_group(app, db, checkUI):
     # Параметры группы контактов
     group = Group(name="New_045456661")
     if app.group.count == 0:
@@ -68,3 +72,5 @@ def test_edit_random_contacts_group(app, db):
     new_groups = db.database.get_groups_list()
     # Сравниваем списки по содержимому
     assert old_groups.sort() == new_groups.sort()
+    if (checkUI):
+      assert app.group.get_groups_list().sort() == new_groups.sort()

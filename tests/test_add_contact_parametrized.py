@@ -24,22 +24,25 @@ testdata = [Contact(address=common.random_string(10), middlename=common.random_a
 
  # Тест - создание группы контактов
 @pytest.mark.parametrize("contact", testdata, ids=[repr(x) for x in testdata])
-def test_TestAddContact_parametrized(app, contact):
+def test_TestAddContact_parametrized(app, contact, db, checkUI):
     app.session.to_homepage()
     # Запoминаем список контактов
-    old_contacts = app.contacts.get_contacts_list()
+    old_contacts = db.database.get_contacts_list()
 
     app.contacts.addContact(contact)
     app.session.to_homepage()
     # Сравниваем размер списков
-    assert len(old_contacts) + 1 == app.contacts.count()
+    if checkUI:
+        assert len(old_contacts) + 1 == app.contacts.count()
     #  Получаем новый список контактов
-    new_contacts = app.contacts.get_contacts_list()
+    new_contacts = db.database.get_contacts_list()
     # Сравниваем списки по содержимому
     assert old_contacts.sort() == new_contacts.sort()
+    if checkUI:
+        assert app.contacts.get_contacts_list().sort() == new_contacts.sort()
 
  # Тест - создание группы контактов из JSON
-def test_TestAddContact_parametrized_from_json(app, json_contacts):
+def test_TestAddContact_parametrized_from_json(app, json_contacts, db, checkUI):
     # Формируем тестовые данные
     jsonfile = "../data/groups.json"
     if not os.path.isfile(os.path.join(os.path.abspath(os.path.dirname(__file__)), jsonfile)):
@@ -47,12 +50,15 @@ def test_TestAddContact_parametrized_from_json(app, json_contacts):
 
     app.session.to_homepage()
     # Запoминаем список контактов
-    old_contacts = app.contacts.get_contacts_list()
+    old_contacts = db.database.get_contacts_list()
     app.contacts.addContact(json_contacts)
     app.session.to_homepage()
     # Сравниваем размер списков
-    assert len(old_contacts) + 1 == app.contacts.count()
+    if checkUI:
+        assert len(old_contacts) + 1 == app.contacts.count()
     #  Получаем новый список контактов
     new_contacts = app.contacts.get_contacts_list()
     # Сравниваем списки по содержимому
     assert old_contacts.sort() == new_contacts.sort()
+    if checkUI:
+        assert app.contacts.get_contacts_list().sort() == new_contacts.sort()

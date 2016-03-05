@@ -21,7 +21,7 @@ new_contact = Contact(Contact(address="Qwerty00", middlename="foo", lastname="Ba
                               amonth= "July", bmonth= "May", group=""))
 
 # Редактирование контакта
-def test_TestEditContact(app):
+def test_TestEditContact(app, db, checkUI):
     app.session.to_homepage()
     if not app.contacts.is_contact_exist():
         # Контактов нет - создадим
@@ -29,7 +29,7 @@ def test_TestEditContact(app):
         app.session.to_homepage()
 
     # Запoминаем список контактов
-    old_contacts= app.contacts.get_contacts_list()
+    old_contacts=  db.database.get_contacts_list()
     new_contact.id = old_contacts[0].id
 
     app.contacts.edit_first_contact(new_contact)
@@ -37,58 +37,66 @@ def test_TestEditContact(app):
     # Сравниваем размер списков
     assert len(old_contacts) == app.contacts.count()
     #  Получаем новый список контактов
-    new_contacts = app.contacts.get_contacts_list()
+    new_contacts =  db.database.get_contacts_list()
     old_contacts[0] = new_contact
     assert sorted(old_contacts, key=Contact.id_or_max) == sorted(new_contacts, key=Contact.id_or_max)
+    if checkUI:
+        assert app.contacts.get_contacts_list().sort() == new_contacts.sort()
 
 # Удаление фото контакта
-def test_TestDelContactPhoto(app):
+def test_TestDelContactPhoto(app, db, checkUI):
     if not app.contacts.is_contact_exist():
         # Контактов нет - создадим
         app.contacts.addContact(contact)
         app.session.to_homepage()
     # Запoминаем список контактов
-    old_contacts= app.contacts.get_contacts_list()
+    old_contacts = db.database.get_contacts_list()
     new_contact.id = old_contacts[0].id
 
     app.contacts.delete_first_contact_photo()
     app.session.to_homepage()
     # Сравниваем размер списков
-    assert len(old_contacts) == app.contacts.count()
+    if checkUI:
+        assert len(old_contacts) == app.contacts.count()
     #  Получаем новый список контактов
-    new_contacts = app.contacts.get_contacts_list()
+    new_contacts = db.database.get_contacts_list()
     old_contacts[0] = new_contact
     assert sorted(old_contacts, key=Contact.id_or_max) == sorted(new_contacts, key=Contact.id_or_max)
+    if checkUI:
+        assert app.contacts.get_contacts_list().sort() == new_contacts.sort()
 
 # Редактирование первого контакта со страницы просмотра
-def test_TestModifyContact(app):
+def test_TestModifyContact(app, db, checkUI):
     app.session.to_homepage()
     if not app.contacts.is_contact_exist():
         # Контактов нет - создадим
         app.contacts.addContact(contact)
         app.session.to_homepage()
     # Запoминаем список контактов
-    old_contacts= app.contacts.get_contacts_list()
+    old_contacts=  db.database.get_contacts_list()
     new_contact.id = old_contacts[0].id
     app.contacts.modify_first_contact(new_contact)
     app.session.to_homepage()
     # Сравниваем размер списков
-    assert len(old_contacts)  == app.contacts.count()
+    if checkUI:
+        assert len(old_contacts)  == app.contacts.count()
     #  Получаем новый список контактов
-    new_contacts = app.contacts.get_contacts_list()
+    new_contacts =  db.database.get_contacts_list()
     # Сравниваем списки по содержимому
     old_contacts[0] = new_contact
     assert sorted(old_contacts, key=Contact.id_or_max) == sorted(new_contacts, key=Contact.id_or_max)
+    if checkUI:
+        assert app.contacts.get_contacts_list().sort() == new_contacts.sort()
 
 # Редактирование случайно выброанного контакта
-def test_TestEditRandomContact(app):
+def test_TestEditRandomContact(app, db, checkUI):
     app.session.to_homepage()
     if not app.contacts.is_contact_exist():
         # Контактов нет - создадим
         app.contacts.addContact(contact)
         app.session.to_homepage()
     # Запoминаем список контактов
-    old_contacts= app.contacts.get_contacts_list()
+    old_contacts=  db.database.get_contacts_list()
     # Cлучайным образом выбираем контакт
     index = randrange(len(old_contacts))
     #  Получаем новый список контактов
@@ -96,8 +104,11 @@ def test_TestEditRandomContact(app):
     app.contacts.edit_contact_by_index(index,new_contact)
     app.session.to_homepage()
     # Сравниваем размер списков
-    assert len(old_contacts) == app.contacts.count()
+    if checkUI:
+        assert len(old_contacts) == app.contacts.count()
     #  Получаем новый список контактов
-    new_contacts = app.contacts.get_contacts_list()
+    new_contacts = db.database.get_contacts_list()
     old_contacts[index] = new_contact
     assert sorted(old_contacts, key=Contact.id_or_max) == sorted(new_contacts, key=Contact.id_or_max)
+    if checkUI:
+        assert app.contacts.get_contacts_list().sort() == new_contacts.sort()

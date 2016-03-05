@@ -12,43 +12,48 @@ contact = Contact(address="Qwerty", middlename="foo", lastname="Bar", nickname="
                   email = "mymail@hosting.com")
 
 # Тест - удаление первой в списке группы контактов
-def test_delete_contact(app):
+def test_delete_contact(app, db, checkUI):
     app.session.to_homepage()
     if not app.contacts.count == 0:
         # Контактов нет - создадим
         app.contacts.addContact(contact)
         app.session.to_homepage()
     # Запoминаем список контактов
-    old_contacts = app.contacts.get_contacts_list()
+    old_contacts = db.database.get_contacts_list()
     # Удаляем группу контактов
     app.contacts.delete_first_contact()
     app.session.to_homepage()
     # Сравниваем размер списков
-    assert len(old_contacts) - 1 == app.contacts.count()
+    if checkUI:
+        assert len(old_contacts) - 1 == app.contacts.count()
     #  Получаем новый список контактов
-    new_contacts = app.contacts.get_contacts_list()
+    new_contacts = db.database.get_contacts_list()
     # Сравниваем списки по содержимому
     old_contacts[0:1] = []
     assert old_contacts.sort() == new_contacts.sort()
-
+    if checkUI:
+        assert app.contacts.get_contacts_list().sort() == new_contacts.sort()
 # Тест - удаление случайно выбранного контактa
-def test_delete_random_contact(app):
+def test_delete_random_contact(app, db, checkUI):
     app.session.to_homepage()
     if not app.contacts.count == 0:
         # Контактов нет - создадим
         app.contacts.addContact(contact)
         app.session.to_homepage()
     # Запoминаем список контактов
-    old_contacts = app.contacts.get_contacts_list()
+    old_contacts = db.database.get_contacts_list()
     # Cлучайным образом выбираем, что будем удалять
     index = randrange(len(old_contacts))
     # Удаляем группу контактов
     app.contacts.delete_contact_by_index(index)
     app.session.to_homepage()
     # Сравниваем размер списков
-    assert len(old_contacts) - 1 == app.contacts.count()
+    if checkUI:
+        assert len(old_contacts) - 1 == app.contacts.count()
     #  Получаем новый список контактов
-    new_contacts = app.contacts.get_contacts_list()
+    new_contacts = db.database.get_contacts_list()
     # Сравниваем списки по содержимому
     old_contacts[index:index:1] = []
     assert old_contacts.sort() == new_contacts.sort()
+    if checkUI:
+        assert app.contacts.get_contacts_list().sort() == new_contacts.sort()

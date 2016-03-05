@@ -21,7 +21,6 @@ def test_delete_first_group(app,db,checkUI):
     app.group.delete_first_contacts_group()
     #  Получаем новый список групп
     new_groups = db.database.get_groups_list()
-    # Сравниваем списки по содержимому
  #   old_groups[0:1] = []
     # Удаляем  правильную группу
     group = app.group.get_group_by_position(1)
@@ -41,8 +40,7 @@ def test_delete_group_by_name(app,db,checkUI):
    old_groups = db.database.get_groups_list()
    # Запоминаем идентификатор удаленной группы
    group.id = app.group.delete_contacts_group_by_name(group.name)
-   # Сравниваем списки по содержимому
-      #  Получаем новый список групп
+   #  Получаем новый список групп
    new_groups = db.database.get_groups_list()
  #  group.name = "Select ("+ group.name +")"
    old_groups.remove(group) # Удаляем  правильную группу
@@ -65,14 +63,15 @@ def test_delete_random_group(app,db,checkUI):
     # Удаляем группу контактов
   #  app.group.delete_contacts_group_by_position(index)
     app.group.delete_contacts_group_by_id(group.id)
-   # Сравниваем размер списков
-   # assert len(old_groups) - 1 == app.group.count()
+    # Сравниваем размер списков
+    if (checkUI):
+        assert len(old_groups) - 1 == app.group.count()
     #  Получаем новый список групп
    # new_groups = app.group.get_groups_list()
     new_groups = db.database.get_groups_list()
+   # old_groups[index:index:1] = []
     old_groups.remove(group) # Удаляем  правильную группу
     # Сравниваем списки по содержимому
-   # old_groups[index:index:1] = []
     assert sorted(old_groups, key=Group.id_or_max) == sorted(new_groups, key=Group.id_or_max)
     if (checkUI):
       assert app.group.get_groups_list().sort() == new_groups.sort()
