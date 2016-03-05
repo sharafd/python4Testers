@@ -6,28 +6,36 @@ import os, json
 import pytest
 from fixtures import Application
 from model import LoginPage
+from fixtures.db import DbFixture
 
 fixture = None
 configuration = None
 login = LoginPage(login = None, password = None)
 
+# Чтение кoнфигурационного файла
+def load_config(file):
+  global configuration
+
+  if configuration is None:
+    with open(file) as config_file:
+        configuration  = json.load(config_file)
+
+  return configuration
+
 @pytest.fixture
 def app(request):
     global login
     global fixture
-    global configuration
-    # Чтение клнфигурационного файла
-    if configuration is None:
-        with open(request.config.getoption("--cfg")) as config_file:
-            configuration  = json.load(config_file)
+    # Чтение кoнфигурационного файла
+    web_config = load_config(request.config.getoption("--cfg"))['web']
     # Создание фикстуры
     if fixture is None or not fixture.isValid():
         browser = request.config.getoption("--browser")
-        fixture = Application(browser=browser, baseurl = configuration['baseurl'])
-        login = LoginPage(login = configuration['username'], password = configuration['password'])
+        fixture = Application(browser=browser, baseurl = web_config['baseurl'])
+        login = LoginPage(login = web_config['username'], password = web_config['password'])
 
     fixture.session.open_login_page()
-    fixture.session.ensure_login(login, configuration['username'])
+    fixture.session.ensure_login(login, web_config['username'])
     return fixture
 
 @pytest.fixture(scope="session", autouse="True")
@@ -38,6 +46,17 @@ def stop(request):
 
     request.addfinalizer(fin)
     return fixture
+
+@pytest.fixture(scope="session")
+def db(request):
+    # Чтение кoнфигурационного файла
+    db_config = load_config(request.config.getoption("--cfg"))['db']
+    dbfixture= DbFixture(host = db_config['host'], database = db_config['name'],
+          user = db_config['user'], password = db_config['password'])
+    def fin():
+        dbfixture.destroy()
+    request.addfinalizer(fin)
+    return dbfixture
 
 # Опции командной строки
 def pytest_addoption(parser):
