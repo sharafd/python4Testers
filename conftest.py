@@ -62,10 +62,15 @@ def db(request):
     request.addfinalizer(fin)
     return dbfixture
 
+@pytest.fixture
+def checkUI(request):
+    return request.config.getoption("--checkUI")
+
 # Опции командной строки
 def pytest_addoption(parser):
     parser.addoption("--browser", action = "store", default = "firefox")
     parser.addoption("--cfg", action = "store", default = os.path.join(os.path.abspath(os.path.dirname(__file__)), "cfg.json"))
+    parser.addoption("--checkUI", action = "store_true")
 
 def load_from_module(module):
     return importlib.import_module("data.%s" % module).testdata
@@ -83,3 +88,5 @@ def pytest_generate_tests(metafunc):
         elif fixture.startswith("json_"):
             testdata = load_from_json(fixture[5:])
             metafunc.parametrize(fixture, testdata, ids=[str(x) for x in testdata])
+
+

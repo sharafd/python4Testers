@@ -11,7 +11,7 @@ def create_group(app):
     app.group.add_new_contacts_group(group)
 
 # Тест - удаление первой группы контактов
-def test_delete_first_group(app,db):
+def test_delete_first_group(app,db,checkUI):
     if not app.group.is_group_exist:
         # групп нет - надо создать
         create_group(app)
@@ -28,10 +28,13 @@ def test_delete_first_group(app,db):
     group.name = group.name[9:-1] # изюавляемся от Select ( в имени группы
     old_groups.remove(group)
     assert old_groups.sort() == new_groups.sort()
+    # Отключаемая проверка с интерфейса
+    if (checkUI):
+      assert app.group.get_groups_list().sort() == new_groups.sort()
 
 
 # Тест - удаление группы контактов по имени
-def test_delete_group_by_name(app,db):
+def test_delete_group_by_name(app,db,checkUI):
    group = Group(name="New_01")
    if not app.group.is_group_exist(group.name):
       app.group.add_new_contacts_group(group)
@@ -45,9 +48,11 @@ def test_delete_group_by_name(app,db):
    old_groups.remove(group) # Удаляем  правильную группу
    # cравниваем
    assert sorted(old_groups, key=Group.id_or_max) == sorted(new_groups, key=Group.id_or_max)
+   if (checkUI):
+      assert app.group.get_groups_list().sort() == new_groups.sort()
 
 # Тест - удаление случайно выбранной группы контактов
-def test_delete_random_group(app,db):
+def test_delete_random_group(app,db,checkUI):
     if not app.group.count == 0:
         # групп нет - надо создать
         create_group(app)
@@ -69,3 +74,5 @@ def test_delete_random_group(app,db):
     # Сравниваем списки по содержимому
    # old_groups[index:index:1] = []
     assert sorted(old_groups, key=Group.id_or_max) == sorted(new_groups, key=Group.id_or_max)
+    if (checkUI):
+      assert app.group.get_groups_list().sort() == new_groups.sort()
