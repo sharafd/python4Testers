@@ -13,6 +13,8 @@ class DbFixture:
     self.password =password
     self.connection = mysql.connector.connect(host = host, database=database,
                                               user = user, password = password)
+    self.connection.autocommit = True
     self.database = DbHelper(self)
+
   def destroy(self):
     self.connection.close()

@@ -113,9 +113,29 @@ class GroupsHelper:
         self.open_groups_page()
         return len(self.app.wd.find_elements_by_name("selected[]"))
 
-
+    # Привести в соотвествие представление групп с интерфейса и в БД
     def format_groups_as_from_ui(self, group):
         group.name = "Select (" + group.name + ")"
         return Group(id = group.id, name = group.name,
                      header = group.header.strip(), footer = group.footer.strip())
+
+    # Выбирает группу по идентификатору
+    def select_group_by_id(self, id):
+        self.app.wd.find_element_by_css_selector("input[value='%s']" % id).click()
+
+    # Удаляет группу по идентификатору
+    def delete_contacts_group_by_id(self, id):
+        self.open_groups_page()
+        self.select_group_by_id(id)
+        self.app.wd.find_element_by_name("delete").click()
+        self.group_cache = None
+
+    # Получить группу по номеру в списке сверу вниз
+    def get_group_by_position(self, index):
+        self.open_groups_page()
+        return Group(
+                id = self.app.wd.find_element_by_xpath("(//input[@name='selected[]'])[" + str(index) +"]").get_attribute("value"),
+                name = self.app.wd.find_element_by_xpath("(//input[@name='selected[]'])[" + str(index) +"]").get_attribute("title")
+               )
+
 
