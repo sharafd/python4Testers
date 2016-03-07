@@ -27,7 +27,7 @@ def test_phones_on_homepage_split(app):
     # Контакта нет - создадим
         app.contacts.addContact(contact)
         app.session.to_homepage()
-        index = 0
+        index = 1
 
     contacts_from_phone_app = app.contacts.get_contacts_list()[index]
     contacts_from_edit_page = app.contacts.get_contact_info_from_edit_page(index)
@@ -48,7 +48,7 @@ def test_phones_on_viewpage_split(app):
     # Контакта нет - создадим
         app.contacts.addContact(contact)
         app.session.to_homepage()
-        index = 0
+        index = 1
 
     contacts_from_edit_page = app.contacts.get_contact_info_from_edit_page(index)
 

@@ -5,8 +5,7 @@ import jsonpickle
 import os, json
 import pytest
 
-from fixtures import Application
-from fixtures import DbFixture
+from fixtures import *
 
 from model import LoginPage
 
@@ -61,6 +60,16 @@ def db(request):
         dbfixture.destroy()
     request.addfinalizer(fin)
     return dbfixture
+
+# Фикстура для ORM объектов
+@pytest.fixture(scope="session")
+def orm(request):
+    # Чтение кoнфигурационного файла
+    db_config = load_config(request.config.getoption("--cfg"))['db']
+    dbfixture= ORMFixture(host = db_config['host'], database = db_config['name'],
+          user = db_config['user'], password = db_config['password'])
+    return dbfixture
+
 
 @pytest.fixture
 def checkUI(request):
