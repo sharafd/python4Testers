@@ -217,8 +217,8 @@ class ContactsHelper:
              #   address  =  element.find_element_by_xpath("//td[4]").text
                 cells = element.find_elements_by_tag_name("td")
                 value = cells[0].find_element_by_tag_name("input").get_attribute("value")
-                firstname = cells[1].text
-                lastname = cells[2].text
+                firstname = cells[2].text
+                lastname = cells[1].text
                 address = cells[3].text
                 allmails = cells[4].text.splitlines()
                 allphones = cells[5].text.splitlines()
@@ -262,8 +262,8 @@ class ContactsHelper:
             for element in self.app.wd.find_elements_by_xpath("//tr[@name='entry']"):
                 cells = element.find_elements_by_tag_name("td")
                 value = cells[0].find_element_by_tag_name("input").get_attribute("value")
-                firstname = cells[1].text
-                lastname = cells[2].text
+                firstname = cells[2].text
+                lastname = cells[1].text
                 address = cells[3].text
                 allmails = cells[4].text
                 allphones = cells[5].text

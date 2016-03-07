@@ -27,10 +27,14 @@ def test_compare_contact_info_split(app):
     # Контакта нет - создадим
         app.contacts.addContact(contact)
         app.session.to_homepage()
-        index = 0
+        index = 1
 
     contacts_from_phone_app = app.contacts.get_contacts_list()[index]
     contacts_from_edit_page = app.contacts.get_contact_info_from_edit_page(index)
+
+    assert(contacts_from_phone_app.firstname == contacts_from_edit_page.firstname)
+    assert(contacts_from_phone_app.lastname == contacts_from_edit_page.lastname)
+    assert(contacts_from_phone_app.address == contacts_from_edit_page.address)
 
     assert(contacts_from_phone_app.home == common.clear(contacts_from_edit_page.home,"[() -]"))
     assert(contacts_from_phone_app.mobile == common.clear(contacts_from_edit_page.mobile,"[() -]"))
@@ -58,6 +62,10 @@ def test_compare_contact_info_merge(app):
 
     contacts_from_phone_app = app.contacts.get_contacts_list_merged()[index]
     contacts_from_edit_page = app.contacts.get_contact_info_from_edit_page(index)
+
+    assert(contacts_from_phone_app.firstname == contacts_from_edit_page.firstname)
+    assert(contacts_from_phone_app.lastname == contacts_from_edit_page.lastname)
+    assert(contacts_from_phone_app.address == contacts_from_edit_page.address)
 
     assert(contacts_from_phone_app.all_emails_from_home_page == app.contacts.merge_emails_like_on_home_page(contacts_from_edit_page))
     assert(contacts_from_phone_app.all_phones_from_home_page == app.contacts.merge_phones_like_on_home_page(contacts_from_edit_page))

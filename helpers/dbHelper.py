@@ -86,9 +86,7 @@ class DbHelper:
         phone2 = phone2,
         notes = notes,
         group= domain_id,
-        email = email,
-        all_phones_from_home_page = None,
-        all_emails_from_home_page = None
+        email = email
       ))
     finally:
       cursor.close()
