@@ -138,4 +138,8 @@ class GroupsHelper:
                 name = self.app.wd.find_element_by_xpath("(//input[@name='selected[]'])[" + str(index) +"]").get_attribute("title")
                )
 
-
+    # Получить ID группы контактов по имени
+    def get_contacts_group_id_by_name(self, group):
+        self.open_groups_page()
+        gid = self.app.wd.find_element_by_xpath("//input[contains(@title, 'Select " +  "(%s)" % group.name + "')]").get_attribute("value")
+        return gid

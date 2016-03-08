@@ -18,7 +18,7 @@ class ORMFixture:
         self.db.bind('mysql', host = host, database=database,
                                               user = user, password = password, conv = decoders)
         self.db.generate_mapping()
-       # sql_debug(True)
+        sql_debug(True)
 
     # Объект Группы
     class ORMGroup(db.Entity):
@@ -114,12 +114,13 @@ class ORMFixture:
 
     # Принадлежит ли контакт группе
     @db_session
-    def get_contacts_in_groups(self, groups):
-        orm_group = list(select(g for g in ORMFixture.ORMGroup if g.id == groups.id))[0]
+    def get_contacts_in_groups(self, group):
+        orm_group = list(select(g for g in ORMFixture.ORMGroup if g.id == group.id))[0]
         return  self.orm2modelContact(orm_group.contacts)
 
     @db_session
-    def get_contacts_not_in_groups(self, groups):
-        orm_group = list(select(g for g in ORMFixture.ORMGroup if g.id == groups.id))[0]
+    def get_contacts_not_in_groups(self, group):
+        orm_group = list(select(g for g in ORMFixture.ORMGroup if g.id  == group.id))[0]
         return self.orm2modelContact(select(c for c in ORMFixture.ORMContact if c.deprecated is None
                                             and orm_group not in c.groups))
+

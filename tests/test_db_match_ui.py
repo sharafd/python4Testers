@@ -31,7 +31,7 @@ def test_groups_list(app, db):
     #  Получаем список групп из БД
     db_list = map(app.group.format_groups_as_from_ui, db.database.get_groups_list())
 
-    assert(sorted(ui_list, key=Group.id_or_max) == sorted(db_list, key=Group.id_or_max))
+    assert ui_list.sort() == db_list.sort()
 
 # dbfixture
 def test_contacts_list(app, db):
