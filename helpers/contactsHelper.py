@@ -342,3 +342,16 @@ class ContactsHelper:
     # Принудительная очистка кеша
     def clear_cache(self):
         self.contacts_cache = None
+
+    # Редактирование контактa по номеру в списке сверху вниз
+    def remove_contact_from_group(self, group, contact):
+        self.app.wd.find_element_by_xpath(
+                                    "//select[@name='group']//option[text()='" + group.name + "']").click()
+        index = self.get_contact_index_by_address(contact.address)
+        self.select_contact_by_index(index)
+        self.app.wd.find_element_by_xpath("//input[@type='submit' and @name= 'remove']").click()
+
+    # показать все контакты
+    def show_all_contacts(self):
+        self.app.wd.find_element_by_xpath(
+                                    "//select[@name='group']//option[text()='[all]']").click()

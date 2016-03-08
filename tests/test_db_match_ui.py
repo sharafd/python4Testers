@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-# Проверки групп и контактов - смравнение с БД
+# Проверки групп и контактов - сравнение с БД
 
 import os
 from fixtures import ORMFixture

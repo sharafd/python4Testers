@@ -1,4 +1,5 @@
 # -*- coding: utf-8 -*-
+# Проверки нахождения котакта в группе - сравнение с БД
 
 from model import Contact, Group
 
@@ -27,7 +28,7 @@ def test_TestAddContactIntoGroup(app, orm, checkUI):
         assert app.contacts.get_contacts_list().sort() == orm.database.get_contacts_list().sort()
 
 
-# Редактирование контакта
+# Исклюяение котакта из группы
 def test_TestRemoveContactFromGroup(app, orm, checkUI):
     if not app.group.is_group_exist(group.name):
         # группы нет - надо создать
@@ -41,21 +42,20 @@ def test_TestRemoveContactFromGroup(app, orm, checkUI):
         app.contacts.addContact(contact)
         app.session.to_homepage()
 
-
-
-
     # Ищем контакт
     group.id = app.group.get_contacts_group_id_by_name(group)
-    contacts = orm.get_contacts_not_in_groups(group)
+
 
     # Исключаем контакт из группы
     app.session.to_homepage()
     contact.group = None
-    app.contacts.edit_contact_by_index(index, contact)
-    app.session.to_homepage()
+    app.contacts.remove_contact_from_group(group, contact)
+    contacts = orm.get_contacts_not_in_groups(group)
 
     assert (contact in list(contacts))
 
     # Сравниваем списки по содержимому
     if checkUI:
+        app.session.to_homepage()
+        app.contacts.show_all_contacts()
         assert app.contacts.get_contacts_list().sort() == orm.get_contacts_list().sort()
