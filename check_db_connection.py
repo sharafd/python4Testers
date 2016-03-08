@@ -49,7 +49,7 @@ print("contact in groups")
 print("--------------")
 
 
-l = db.get_contacts_in_groups((Group(name="Group_for_ORM")))
+l = db.get_contacts_in_groups(Group(id="759"))
 
 for item in l:
     print(item)

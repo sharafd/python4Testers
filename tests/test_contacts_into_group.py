@@ -1,29 +1,61 @@
 # -*- coding: utf-8 -*-
 
-# Добавление нового контакта в группу New_01
 from model import Contact, Group
 
+group = Group(name="Group_for_ORM")
+contact = Contact(middlename="foo", lastname="Bar", nickname="boo", byear="1988", ayear="2000", email ="mymail@hosting.com",
+                  title="Contact", company="MyCompany", home="S779", mobile="+76-6", work="56641646", fax="", email2="", email3="fff@bar.ru",
+                  homepage="www.my.org", address2="964646466", phone2="146546546", notes="++++++++++", bday="4", aday="6", amonth= "July",
+                  bmonth= "", photo= "", group=group.name, address = group.name)
 
-def test_TestAddContactToGroup(app, db, checkUI):
-    if not app.group.is_group_exist(name = "Group_for_ORM"):
+def test_TestAddContactIntoGroup(app, orm, checkUI):
+    if not app.group.is_group_exist(group.name):
         # группы нет - надо создать
-        app.group.add_new_contacts_group(Group(name="Group_for_ORM"))
+        app.group.add_new_contacts_group(group)
     app.session.to_homepage()
-    old_contacts = db.database.get_contacts_list()
-    app.contacts.addContact(Contact(address="Qwerty", middlename="foo", lastname="Bar", nickname="boo", byear="1988", ayear="2000", email ="mymail@hosting.com",
-                                    title="Contact", company="MyCompany", home="S779", mobile="+76-6", work="56641646", fax="", email2="", email3="fff@bar.ru",
-                                    homepage="www.my.org", address2="964646466", phone2="146546546", notes="++++++++++", bday="4", aday="6", amonth= "July",
-                                    bmonth= "", photo= "", group="Group_for_ORM"))
+    app.contacts.addContact(contact)
     app.session.to_homepage()
-    gid = app.group.get_contacts_group_id_by_name(Group(name="Group_for_ORM"))
-    # Сравниваем размер списков
-    if (checkUI):
-        assert len(old_contacts) + 1 == app.contacts.count()
-    #  Получаем новый список контактов
-    new_contacts = db.database.get_contacts_list()
-    # Сравниваем списки по содержимому
-    assert old_contacts.sort() == new_contacts.sort()
-    if (checkUI):
-        assert app.group.get_groups_list().sort() == new_contacts.sort()
 
-    
+    # Ищем контакт в списке контактов группы
+    group.id = app.group.get_contacts_group_id_by_name(group)
+    contacts_in_group = orm.get_contacts_in_groups(group)
+
+    assert (contact in list(contacts_in_group))
+
+    # Сравниваем списки по содержимому
+    if (checkUI):
+        assert app.contacts.get_contacts_list().sort() == orm.database.get_contacts_list().sort()
+
+
+# Редактирование контакта
+def test_TestRemoveContactFromGroup(app, orm, checkUI):
+    if not app.group.is_group_exist(group.name):
+        # группы нет - надо создать
+        app.group.add_new_contacts_group(group)
+    app.session.to_homepage()
+
+      # Bыбираем контакт
+    index = app.contacts.get_contact_index_by_address(contact.address)
+    if  -1 == index:
+        # Контакта нет - создадим
+        app.contacts.addContact(contact)
+        app.session.to_homepage()
+
+
+
+
+    # Ищем контакт
+    group.id = app.group.get_contacts_group_id_by_name(group)
+    contacts = orm.get_contacts_not_in_groups(group)
+
+    # Исключаем контакт из группы
+    app.session.to_homepage()
+    contact.group = None
+    app.contacts.edit_contact_by_index(index, contact)
+    app.session.to_homepage()
+
+    assert (contact in list(contacts))
+
+    # Сравниваем списки по содержимому
+    if checkUI:
+        assert app.contacts.get_contacts_list().sort() == orm.get_contacts_list().sort()

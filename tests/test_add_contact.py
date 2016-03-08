@@ -29,7 +29,7 @@ def test_TestAddContact(app, db, checkUI):
     # Сравниваем списки по содержимому
     assert old_contacts.sort() == new_contacts.sort()
     if (checkUI):
-        assert app.group.get_groups_list().sort() == new_contacts.sort()
+        assert app.contacts.get_contacts_list().sort() == new_contacts.sort()
 
 # Добавление нового контакта в группу New_01
 def test_TestAddContactToGroup(app, db, checkUI):
@@ -51,4 +51,4 @@ def test_TestAddContactToGroup(app, db, checkUI):
     # Сравниваем списки по содержимому
     assert old_contacts.sort() == new_contacts.sort()
     if (checkUI):
-        assert app.group.get_groups_list().sort() == new_contacts.sort()
+        assert app.contacts.get_contacts_list().sort() == new_contacts.sort()
