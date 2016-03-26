@@ -4,4 +4,4 @@ selenium
 jsonpickle
 pymysql
 mysql-connector-python
-pytest_allure_adaptor-1.7.1-py2-none-any.whl
+python-allure-adaptor
