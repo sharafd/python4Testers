@@ -5,7 +5,10 @@ from model import Group
 from func import commonFunctions
 common = commonFunctions.Common()
 
+import allure
+
  # Тест - создание группы контактов
+@allure.feature('cоздание группы контактов')
 def test_add_group(app, db, checkUI):
     # Параметры группы контактов
     group = Group(name=common.random_string(15), header=common.random_digits(5), footer=common.random_ascii_string())
@@ -28,6 +31,7 @@ def test_add_group(app, db, checkUI):
       assert app.group.get_groups_list().sort() == new_groups.sort()
 
 # Тест - создание группы контактов, пустые name, header, footer
+@allure.feature('cсоздание группы контактов, пустые name, header, footer')
 def test_add_group_empty_params(app, db, checkUI):
     group = Group(name=None, header=None, footer=None)
     old_groups = db.database.get_groups_list()
