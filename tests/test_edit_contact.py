@@ -22,7 +22,7 @@ new_contact = Contact(Contact(address="Qwerty00", middlename="foo", lastname="Ba
                               amonth= "July", bmonth= "May", group=""))
 
 @pytest.allure.feature('Проверки  контактов - редактирование')
-@pytest.story('Редактирование контакта')
+@pytest.allure.story('Редактирование контакта')
 def test_TestEditContact(app, db, checkUI):
     app.session.to_homepage()
     if not app.contacts.is_contact_exist():
@@ -47,7 +47,7 @@ def test_TestEditContact(app, db, checkUI):
 
 
 @pytest.allure.feature('Проверки  контактов - редактирование')
-@pytest.story('Удаление фото контакта')
+@pytest.allure.story('Удаление фото контакта')
 def test_TestDelContactPhoto(app, db, checkUI):
     if not app.contacts.is_contact_exist():
         # Контактов нет - создадим
@@ -70,7 +70,7 @@ def test_TestDelContactPhoto(app, db, checkUI):
         assert app.contacts.get_contacts_list().sort() == new_contacts.sort()
 
 @pytest.allure.feature('Проверки  контактов - редактирование')
-@pytest.story('Редактирование первого контакта со страницы просмотра')
+@pytest.allure.story('Редактирование первого контакта со страницы просмотра')
 def test_TestModifyContact(app, db, checkUI):
     app.session.to_homepage()
     if not app.contacts.is_contact_exist():
@@ -94,7 +94,7 @@ def test_TestModifyContact(app, db, checkUI):
         assert app.contacts.get_contacts_list().sort() == new_contacts.sort()
 
 @pytest.allure.feature('Проверки  контактов - редактирование')
-@pytest.story('Редактирование случайно выброанного контакта')
+@pytest.allure.story('Редактирование случайно выброанного контакта')
 def test_TestEditRandomContact(app, db, checkUI):
     app.session.to_homepage()
     if not app.contacts.is_contact_exist():

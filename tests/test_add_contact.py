@@ -9,7 +9,7 @@ from func import commonFunctions
 common = commonFunctions.Common()
 
 @pytest.allure.feature('Проверки контактов - добавление')
-@pytest.story('Добавление нового контакта без привязки к группе')
+@pytest.allure.story('Добавление нового контакта без привязки к группе')
 def test_TestAddContact(app, db, checkUI):
     with pytest.allure.step('add new contact'):
         app.session.to_homepage()
@@ -33,8 +33,8 @@ def test_TestAddContact(app, db, checkUI):
     if (checkUI):
         assert app.contacts.get_contacts_list().sort() == new_contacts.sort()
 
-@pytest.feature('Проверки контактов - добавление')
-@pytest.story('Добавление нового контакта в группу New_01')
+@pytest.allure.feature('Проверки контактов - добавление')
+@pytest.allure.story('Добавление нового контакта в группу New_01')
 def test_TestAddContactToGroup(app, db, checkUI):
     if not app.group.is_group_exist(name = "New_01"):
         # группы нет - надо создать
