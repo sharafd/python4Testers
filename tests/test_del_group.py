@@ -3,6 +3,8 @@
 # Проверки групп контактов - удаление
 from random import randrange
 import random
+
+import allure
 from model import Group
 
 # Создаём группу контактов
@@ -10,7 +12,9 @@ def create_group(app):
     group = Group(name="New_01")
     app.group.add_new_contacts_group(group)
 
-# Тест - удаление первой группы контактов
+
+@allure.feature('Проверки групп контактов - удаление')
+@allure.story('Тест - удаление первой группы контактов')
 def test_delete_first_group(app,db,checkUI):
     if not app.group.is_group_exist:
         # групп нет - надо создать
@@ -32,7 +36,8 @@ def test_delete_first_group(app,db,checkUI):
       assert app.group.get_groups_list().sort() == new_groups.sort()
 
 
-# Тест - удаление группы контактов по имени
+@allure.feature('Проверки групп контактов - удаление')
+@allure.story('удаление группы контактов по имени')
 def test_delete_group_by_name(app,db,checkUI):
    group = Group(name="New_01")
    if not app.group.is_group_exist(group.name):
@@ -49,7 +54,8 @@ def test_delete_group_by_name(app,db,checkUI):
    if (checkUI):
       assert app.group.get_groups_list().sort() == new_groups.sort()
 
-# Тест - удаление случайно выбранной группы контактов
+@allure.feature('Проверки групп контактов - удаление')
+@allure.story('удаление случайно выбранной группы контактов')
 def test_delete_random_group(app,db,checkUI):
     if not app.group.count == 0:
         # групп нет - надо создать

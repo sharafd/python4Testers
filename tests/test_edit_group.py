@@ -3,9 +3,11 @@
 # Проверки групп контактов - редактирование
 from random import randrange
 
+import allure
 from model import Group
 
-# Тест - редактирование группы контактов по имени
+@allure.feature('Проверки групп контактов - редактирование')
+@allure.story('редактирование группы контактов по имени')
 def test_edit_group_by_name(app, db, checkUI):
     # Параметры групп контактов
     group = Group(name="New_06661", header="664464664", footer= None)
@@ -29,7 +31,8 @@ def test_edit_group_by_name(app, db, checkUI):
     # cравниваем
     assert old_groups.sort() == new_groups.sort()
 
-# Тест - редактирование группы контактов  - только наименование
+@allure.feature('Проверки групп контактов - редактирование')
+@allure.story('редактирование группы контактов  - только наименование')
 def test_edit_first_contacts_group(app, db, checkUI):
     # Параметры группы контактов
     group = Group(name="New_045456661")
@@ -54,7 +57,8 @@ def test_edit_first_contacts_group(app, db, checkUI):
     if (checkUI):
       assert app.group.get_groups_list().sort() == new_groups.sort()
 
-# Тест - редактирование группы контактов
+@allure.feature('Проверки групп контактов - редактирование')
+@allure.story('редактирование группы контактов')
 def test_edit_random_contacts_group(app, db, checkUI):
     # Параметры группы контактов
     group = Group(name="New_045456661")

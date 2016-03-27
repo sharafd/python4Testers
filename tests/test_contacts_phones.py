@@ -3,6 +3,7 @@
 # Проверки групп контактов - телефоны
 from random import randrange
 
+import allure
 import os
 from model import Contact
 from func import commonFunctions
@@ -15,7 +16,8 @@ contact = Contact(address='phones_test', middlename=common.random_ascii_string(1
                   photo= os.path.join(os.path.abspath(os.path.dirname(__file__)), "../resources/avatar.png"),
                   phone2="+999(55)6", notes="++++++++++", bday="4", aday="14", amonth= "July", bmonth= "May", group=None)
 
-# Телефоны на главной странице - прямая проверка
+@allure.feature('Проверки групп контактов - телефоны')
+@allure.story('Телефоны на главной странице - прямая проверка')
 def test_phones_on_homepage_split(app):
 
     app.session.to_homepage()
@@ -37,7 +39,8 @@ def test_phones_on_homepage_split(app):
     assert(contacts_from_phone_app.work == common.clear(contacts_from_edit_page.work,"[() -]"))
     assert(contacts_from_phone_app.phone2 == common.clear(contacts_from_edit_page.phone2,"[() -]"))
 
-# Телефоны на странице просмотра - прямая проверка
+@allure.feature('Проверки групп контактов - телефоны')
+@allure.story('Телефоны на странице просмотра - прямая проверка')
 def test_phones_on_viewpage_split(app):
     app.session.to_homepage()
     #Принудительная очистка кеша во избежание сравнения с несуществующими в кеше полями
@@ -61,7 +64,8 @@ def test_phones_on_viewpage_split(app):
     assert(contacts_from_edit_page.work == contacts_from_view_page.work)
     assert(contacts_from_edit_page.phone2 == contacts_from_view_page.phone2)
 
-# Телефоны на главной странице - обратная проверка
+@allure.feature('Проверки групп контактов - телефоны')
+@allure.story('Телефоны на странице просмотра - обратная проверка')
 def test_phones_on_homepage_merge(app):
 
     app.session.to_homepage()

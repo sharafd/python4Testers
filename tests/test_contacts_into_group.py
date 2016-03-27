@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 # Проверки нахождения котакта в группе - сравнение с БД
-
+import allure
 from model import Contact, Group
 
 group = Group(name="Group_for_ORM")
@@ -9,6 +9,8 @@ contact = Contact(middlename="foo", lastname="Bar", nickname="boo", byear="1988"
                   homepage="www.my.org", address2="964646466", phone2="146546546", notes="++++++++++", bday="4", aday="6", amonth= "July",
                   bmonth= "", photo= "", group=group.name, address = group.name)
 
+@allure.feature('Проверки нахождения котакта в группе - сравнение с БД')
+@allure.story('Добавление контакта в группу')
 def test_TestAddContactIntoGroup(app, orm, checkUI):
     if not app.group.is_group_exist(group.name):
         # группы нет - надо создать
@@ -27,8 +29,8 @@ def test_TestAddContactIntoGroup(app, orm, checkUI):
     if (checkUI):
         assert app.contacts.get_contacts_list().sort() == orm.database.get_contacts_list().sort()
 
-
-# Исклюяение котакта из группы
+@allure.feature('Проверки нахождения котакта в группе - сравнение с БД')
+@allure.story('Исключение контакта из группы')
 def test_TestRemoveContactFromGroup(app, orm, checkUI):
     if not app.group.is_group_exist(group.name):
         # группы нет - надо создать

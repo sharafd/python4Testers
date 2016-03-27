@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 # Проверки контактов - добавление - добавление из параметра
-
+import allure
 import os
 
 import pytest
@@ -23,6 +23,8 @@ testdata = [Contact(address=common.random_string(10), middlename=common.random_a
             ]
 
  # Тест - создание группы контактов
+@allure.feature('Проверки контактов - добавление - добавление из параметра')
+@allure.story('Cоздание группы контактов')
 @pytest.mark.parametrize("contact", testdata, ids=[repr(x) for x in testdata])
 def test_TestAddContact_parametrized(app, contact, db, checkUI):
     app.session.to_homepage()
@@ -42,6 +44,8 @@ def test_TestAddContact_parametrized(app, contact, db, checkUI):
         assert app.contacts.get_contacts_list().sort() == new_contacts.sort()
 
  # Тест - создание группы контактов из JSON
+@allure.feature('Проверки контактов - добавление - добавление из параметра')
+@allure.story('Тест - создание группы контактов из JSON')
 def test_TestAddContact_parametrized_from_json(app, json_contacts, db, checkUI):
     # Формируем тестовые данные
     jsonfile = "../data/groups.json"

@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-
+import allure
 import os
 from func import commonFunctions
 from model import Contact
@@ -16,6 +16,8 @@ contact = Contact(address='phones_test', middlename=common.random_ascii_string(1
                   phone2="+999(55)6", notes="++++++++++", bday="4", aday="14", amonth= "July", bmonth= "May", group=None)
 
 # Инфо о контакте на главной странице - прямая проверка
+@allure.feature('Инфо о контакте на главной странице')
+@allure.story('прямая проверка')
 def test_compare_contact_info_split(app):
 
     app.session.to_homepage()
@@ -46,6 +48,8 @@ def test_compare_contact_info_split(app):
     assert(contacts_from_phone_app.email3 == contacts_from_edit_page.email3)
 
 # Инфо о контакте на главной странице - обратная проверка
+@allure.feature('Инфо о контакте на главной странице ')
+@allure.story('обратная проверка')
 def test_compare_contact_info_merge(app):
 
     app.session.to_homepage()

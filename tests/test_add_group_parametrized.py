@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # Проверки групп контактов - добавление из параметра
+import allure
 import os
 import pytest
 
@@ -18,6 +19,8 @@ data = [Group(name="", header=None, footer=None)] + [
     ]
 
  # Тест - создание группы контактов
+@allure.feature('Проверки групп контактов - добавление из параметра')
+@allure.story('Cоздание группы контактов')
 @pytest.mark.parametrize("group", data, ids=[repr(x) for x in data])
 def test_add_group_parametrize(app, group):
     # Запоминаем список групп
@@ -34,6 +37,8 @@ def test_add_group_parametrize(app, group):
     assert sorted(old_groups, key=Group.id_or_max) == sorted(new_groups, key=Group.id_or_max)
 
  # Тест - создание группы контактов из генератора данных
+@allure.feature('Проверки групп контактов - добавление из параметра')
+@allure.story('Cоздание группы контактов из генератора данных')
 @pytest.mark.parametrize("group", groups_testdata, ids=[repr(x) for x in groups_testdata])
 def test_add_group_from_generator(app, group, db, checkUI):
     # Запоминаем список групп
@@ -53,6 +58,8 @@ def test_add_group_from_generator(app, group, db, checkUI):
       assert app.group.get_groups_list().sort() == new_groups.sort()
 
  # Тест - создание группы контактов из генератора данных
+@allure.feature('Проверки групп контактов - добавление из параметра')
+@allure.story('Cоздание группы контактов из константы')
 @pytest.mark.parametrize("group", constant_group_data, ids=[repr(x) for x in constant_group_data])
 def test_add_group_from_constant(app, group, db, checkUI):
     # Запоминаем список групп
@@ -71,6 +78,8 @@ def test_add_group_from_constant(app, group, db, checkUI):
       assert app.group.get_groups_list().sort() == new_groups.sort()
 
  # Тест - создание группы контактов из фикстуры
+@allure.feature('Проверки групп контактов - добавление из параметра')
+@allure.story('Cоздание группы контактов из фикстуры')
 def test_add_group_from_fixture(app, data_groups, db, checkUI):
     # Запоминаем список групп
     old_groups = db.database.get_groups_list()
@@ -89,6 +98,8 @@ def test_add_group_from_fixture(app, data_groups, db, checkUI):
       assert app.group.get_groups_list().sort() == new_groups.sort()
 
  # Тест - создание группы контактов из JSON
+@allure.feature('Проверки групп контактов - добавление из параметра')
+@allure.story('Cоздание группы контактов из JSON')
 def test_add_group_from_json(app, json_groups, db, checkUI):
     # Формируем тестовые данные
     jsonfile = "../data/groups.json"

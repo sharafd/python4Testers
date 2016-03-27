@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-# Проверки групп и контактов - сравнение с БД
 
+# Проверки групп и контактов - сравнение с БД
+import allure
 import os
 from fixtures import ORMFixture
 from func import commonFunctions
@@ -22,6 +23,8 @@ def create_group(app):
     app.group.add_new_contacts_group(group)
 
 # dbfixture
+@allure.feature('Проверки групп и контактов - сравнение с БД')
+@allure.story('Сравнение списков групп контактов')
 def test_groups_list(app, db):
     if not app.group.is_group_exist:
         # групп нет - надо создать
@@ -34,6 +37,8 @@ def test_groups_list(app, db):
     assert ui_list.sort() == db_list.sort()
 
 # dbfixture
+@allure.feature('Проверки групп и контактов - сравнение с БД')
+@allure.story('Сроавнение спискоа контактов')
 def test_contacts_list(app, db):
 
     app.session.to_homepage()
@@ -55,6 +60,8 @@ def test_contacts_list(app, db):
     assert ui_list.sort() == db_list.sort()
 
 # ORMFixture
+@allure.feature('Проверки групп и контактов - сравнение с БД')
+@allure.story('Сравнение списков групп контактов - ORM')
 def test_groups_list_as_orm(app, orm):
 
     if not app.group.is_group_exist:
@@ -68,6 +75,8 @@ def test_groups_list_as_orm(app, orm):
     assert(ui_list.sort() == db_list.sort())
 
 # ORMFixture
+@allure.feature('Проверки групп и контактов - сравнение с БД')
+@allure.story('Сроавнение спискоа контактов - ORM')
 def test_contacts_list_as_orm(app, orm):
 
     app.session.to_homepage()
