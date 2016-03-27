@@ -48,7 +48,7 @@ def test_compare_contact_info_split(app):
     assert(contacts_from_phone_app.email3 == contacts_from_edit_page.email3)
 
 # Инфо о контакте на главной странице - обратная проверка
-@allure.feature('Инфо о контакте на главной странице ')
+@allure.feature('Инфо о контакте на главной странице')
 @allure.story('обратная проверка')
 def test_compare_contact_info_merge(app):
 

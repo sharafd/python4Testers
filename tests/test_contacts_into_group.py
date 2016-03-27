@@ -9,7 +9,7 @@ contact = Contact(middlename="foo", lastname="Bar", nickname="boo", byear="1988"
                   homepage="www.my.org", address2="964646466", phone2="146546546", notes="++++++++++", bday="4", aday="6", amonth= "July",
                   bmonth= "", photo= "", group=group.name, address = group.name)
 
-@allure.feature('Проверки нахождения котакта в группе - сравнение с БД')
+@allure.feature('Проверки нахождения контакта в группе - сравнение с БД')
 @allure.story('Добавление контакта в группу')
 def test_TestAddContactIntoGroup(app, orm, checkUI):
     if not app.group.is_group_exist(group.name):
@@ -29,7 +29,7 @@ def test_TestAddContactIntoGroup(app, orm, checkUI):
     if (checkUI):
         assert app.contacts.get_contacts_list().sort() == orm.database.get_contacts_list().sort()
 
-@allure.feature('Проверки нахождения котакта в группе - сравнение с БД')
+@allure.feature('Проверки нахождения контакта в группе - сравнение с БД')
 @allure.story('Исключение контакта из группы')
 def test_TestRemoveContactFromGroup(app, orm, checkUI):
     if not app.group.is_group_exist(group.name):
@@ -46,7 +46,6 @@ def test_TestRemoveContactFromGroup(app, orm, checkUI):
 
     # Ищем контакт
     group.id = app.group.get_contacts_group_id_by_name(group)
-
 
     # Исключаем контакт из группы
     app.session.to_homepage()

@@ -48,7 +48,7 @@ def test_TestAddContact_parametrized(app, contact, db, checkUI):
 @allure.story('Тест - создание группы контактов из JSON')
 def test_TestAddContact_parametrized_from_json(app, json_contacts, db, checkUI):
     # Формируем тестовые данные
-    jsonfile = "../data/groups.json"
+    jsonfile = "../data/contacts.json"
     if not os.path.isfile(os.path.join(os.path.abspath(os.path.dirname(__file__)), jsonfile)):
         generate_json(1, jsonfile)
 
