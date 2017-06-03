@@ -60,3 +60,6 @@ target/
 
 #
 data/*.json
+
+.idea
+*.iml
